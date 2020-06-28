@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<!-- saved from url=(0095)http://yqtb.nwpu.edu.cn/wx/xg/yz-mobile/qj_yqjxj.jsp?id=7wjfpqi96q984t38lp0c078a1g1jl447&type=1 -->
+<html lang="zh-CN" class="pixel-ratio-1"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./销假_files/weui.css">
+    <link rel="stylesheet" href="./销假_files/weuix.css">
+    <link rel="stylesheet" href="./销假_files/main.css">
+    <script type="text/javascript" src="./销假_files/jquery.min.js.下载"></script>
+    <script src="./销假_files/zepto.min.js.下载"></script>
+    <script src="./销假_files/zepto.weui.js.下载"></script>
+
+    <script src="./销假_files/picker.city.js.下载"></script>
+    <script src="./销假_files/php.js.下载"></script>
+    <script src="./销假_files/lrz.min.js.下载"></script>
+
+    <script type="text/javascript" src="./销假_files/layer.js.下载"></script><link rel="stylesheet" href="./销假_files/layer.css" id="layui_layer_skinlayercss" style="">
+    <title>西北工业大学</title>
+    <style type="text/css">
+    	.r-mark {
+		    color: #f00;
+		    padding-right: 5px;
+		}
+		i {
+		    font-style: normal;
+		}
+		.weui-toptips_warn {
+		    background-color: #e64340;
+		}
+		.weui-toptips {
+		    display: none;
+		    position: fixed;
+		    -webkit-transform: translateZ(0);
+		    transform: translateZ(0);
+		    top: 0;
+		    left: 0;
+		    right: 0;
+		    padding: 5px;
+		    font-size: 14px;
+		    text-align: center;
+		    color: #fff;
+		    z-index: 5000;
+		    word-wrap: break-word;
+		    word-break: break-all;
+		}
+		.read{
+			text-align: right;
+		}
+    </style>
+</head>
+<body class="ispc">
+<!-- <div class="weui-toptips weui-toptips_warn js_tooltips">提示：请输入正确的信息！</div> -->
+<div class="container details">
+    <div class="weui-cells__title custom"><i class="icon iconfont icon-jibenxinxi1"></i>请假信息</div>
+    <div class="weui-cells custom">
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>请假类型</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" id="qjlx" name="qjlx" value="
+                私事
+" readonly="readonly" type="text">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>请假事由</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" id="sylb" name="sylb" value="
+                病假
+" readonly="readonly" type="text">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>起始时间</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" id="qssj" name="qssj" type="text" value="
+                2020-06-26 07时
+" readonly="readonly">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>截止时间</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" type="text" value="
+            	2020-06-26 19时
+" readonly="readonly">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>请假时长</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" type="text" value="
+            	12小时
+" readonly="readonly">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>前往目的地</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" id="qwmdd" name="qwmdd" value="
+                校医院
+" readonly="readonly" type="text">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>事由说明</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input read" id="sysm" name="sysm" value="
+                头疼
+" readonly="readonly" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="weui-cells__title custom"><i class="icon iconfont icon-qita"></i>销假信息</div>
+    <div class="weui-cells custom">
+        <input type="hidden" id="id" name="id" value="7wjfpqi96q984t38lp0c078a1g1jl447">
+        <input type="hidden" id="type" name="type" value="1">
+
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>实际返校时间</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input class="weui-input" id="yqqjjzsj" name="yqqjjzsj" type="text" value="
+            	2020-06-26 19时
+" placeholder="请选择实际返校时间" readonly="">
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="weui-cell__bd">
+                <p>销假说明</p>
+            </div>
+        </div>
+        <div class="weui-cell">
+            <div class="textarea-box">
+                <textarea class="weui-textarea" id="yqqjsm" name="yqqjsm" rows="3" placeholder="销假说明" maxlength="100"></textarea>
+            </div>
+        </div>
+
+    </div>
+    <div class="sub-btn-box">
+        <button onclick="go_sub()" class="weui-btn bg-blue">保 存</button>
+    </div>
+    <div id="toast" style="display: none;">
+        <div class="weui-mask_transparent"></div>
+        <div class="weui-toast">
+            <i class="weui-icon-success-no-circle weui-icon_toast"></i>
+            <p class="weui-toast__content">已保存</p>
+        </div>
+    </div>
+    <div class="footer-copy-space"></div>
+</div>
+
+<script>
+    $(function () {
+    	$("#yqqjjzsj").datetimePicker({
+    		title: '请选择销假请假截止时间',
+	        times: function () {
+	            return [
+	                {
+	                    values: (function () {
+	                        var hours = [];
+	                        for (var i=0; i<24; i++) hours.push(i > 9 ? i : '0'+i);
+	                        return hours;
+	                    })()
+	                },
+	                {
+	                    divider: true,  // 这是一个分隔符
+	                    content: '时'
+	                }
+	            ];
+	        },
+	        onChange: function (picker, values, displayValues) {
+	            console.log(values);
+	        },
+	    });
+
+        $("#sjfxsj").datetimePicker({
+    		title: '请选择实际返校时间',
+	        times: function () {
+	            return [
+	                {
+	                    values: (function () {
+	                        var hours = [];
+	                        for (var i=0; i<24; i++) hours.push(i > 9 ? i : '0'+i);
+	                        return hours;
+	                    })()
+	                },
+	                {
+	                    divider: true,  // 这是一个分隔符
+	                    content: '时'
+	                }
+	            ];
+	        },
+	        onChange: function (picker, values, displayValues) {
+	            console.log(values);
+	        },
+	    });
+    });
+
+    function go_sub(){
+    	var id = $("#id").val();
+    	var type = $("#type").val();
+    	var yqqjjzsj = $("#yqqjjzsj").val();
+    	var sjfxsj = $("#sjfxsj").val();
+    	var qssj = $("#qssj").val();
+    	var jzsj;
+    	if(type == '1'){
+	    	if(yqqjjzsj==""){
+				showWarn($("#yqqjjzsj").parents('.weui-cell'));
+				$("#yqqjjzsj").focus();
+				return;
+			}
+			qssj = qssj.substr(0,qssj.length-1);
+			jzsj = yqqjjzsj.substr(0,yqqjjzsj.length-1);
+			var logintimeTemp = qssj.split(" ");
+	        var logouttimeTemp = jzsj.split(" ");
+
+	        var arrloginDate = logintimeTemp[0].split("-");
+	        var arrlogoutDate = logouttimeTemp[0].split("-");
+
+	        var allLoginDate = new Date(arrloginDate[0], arrloginDate[1], arrloginDate[2], logintimeTemp[1], 00, 00);
+	        var allLogoutDate = new Date(arrlogoutDate[0], arrlogoutDate[1], arrlogoutDate[2], logouttimeTemp[1], 00, 00);
+	        if (allLoginDate.getTime() >= allLogoutDate.getTime()) {
+	           	showWarn($("#yqqjjzsj").parents('.weui-cell'));
+				$("#yqqjjzsj").focus();
+				return;
+	        }
+    	}else if(type = '2'){
+	    	if(sjfxsj==""){
+				showWarn($("#sjfxsj").parents('.weui-cell'));
+				$("#sjfxsj").focus();
+				return;
+			}
+			sjfxsj = sjfxsj.substr(0,sjfxsj.length-1);
+    	}
+		var yqqjsm = $("#yqqjsm").val();
+		var xjsm = $("#xjsm").val();
+    	$.ajax({
+			url:'qj_util.jsp',
+			data:{actionType:'yqjxj',id:id,qssj:qssj,type:type,yqqjjzsj:jzsj,sjfxsj:sjfxsj,yqqjsm:yqqjsm,xjsm:xjsm},
+			dataType:'json',
+			type:'post',
+			success:function(data){
+				var cgts;
+				if(type == '1'){
+					cgts = '请假销假申请提交成功';
+				}else if(type == '2'){
+					cgts = '销假保存成功';
+				}
+				if(data.state!=null&&data.state=='1'){
+					layer.msg(cgts,{time:3000},function(){
+						window.location.href="qj_list.jsp?role=null&userType=2";
+					});
+				}else{
+					$('#iosDialog2').fadeIn(200);
+				}
+			},error:function(request, textStatus, errorThrown){
+				if(request.status==403){
+					alert("非法字符,拒绝访问！");
+				}else{
+					alert("操作出现异常，请稍后再试！"+request.status);
+				}
+			}
+		});
+
+    }
+
+    function showWarn(Obj){
+		$(Obj).addClass('weui-cell_warn');
+		var $tooltips = $('.js_tooltips');
+        if ($tooltips.css('display') != 'none') return;
+        $('.page.cell').removeClass('slideIn');
+		$tooltips.css('display', 'block');
+        setTimeout(function () {
+            $tooltips.css('display', 'none');
+            $(Obj).find('.weui-icon-warn').remove();
+        }, 3000);
+	}
+
+	var toastShow = function(){
+		var $toast = $('#toast');
+       	if ($toast.css('display') != 'none') return;
+       	$toast.fadeIn(100);
+        setTimeout(function () {
+            $toast.fadeOut(100);
+        }, 2000);
+	};
+</script>
+<div class="weui-gallery" style="display: none">
+    <span class="weui-gallery__img"></span>
+    <div class="weui-gallery__opr">
+    </div>
+</div>
+<script src="./销假_files/checkdev.js.下载"></script>
+
+</body></html>

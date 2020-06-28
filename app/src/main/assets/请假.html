@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)http://yqtb.nwpu.edu.cn/wx/xg/yz-mobile/qj_info.jsp?id=7wjfpqi96q984t38lp0c078a1g1jl447 -->
+<html lang="zh-CN" class="pixel-ratio-1"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./请假_files/weui.css">
+    <link rel="stylesheet" href="./请假_files/weuix.css">
+    <link rel="stylesheet" href="./请假_files/main.css">
+    <script src="./请假_files/zepto.min.js.下载"></script>
+    <script src="./请假_files/zepto.weui.js.下载"></script>
+    <script src="./请假_files/php.js.下载"></script>
+    <script src="./请假_files/lrz.min.js.下载"></script>
+    <title>请假</title>
+    <style type="text/css">
+    .weui-cells.custom .weui-cell {
+	    padding: 12px 15px;
+	}
+	.weui-cell {
+	    position: initial;
+	    display: flex;
+	    -webkit-box-align: center;
+	    align-items: center;
+	}
+	.weui-cells.custom .weui-cell .weui-cell__bd {
+	    max-width: 30%;
+	}
+	.weui-cell__bd {
+	    -webkit-box-flex: 1;
+	    flex: 1;
+	}
+	.r-mark {
+	    color: #f00;
+	    padding-right: 5px;
+	    font-style: normal;
+	}
+	.weui-cells.custom .weui-cell .weui-cell__ft {
+	    flex: 1;
+	    text-align: right;
+	    color: #999999;
+	}
+	.weui-input {
+	    width: 100%;
+	    border: 0;
+	    outline: 0;
+	    -webkit-appearance: none;
+	    background-color: transparent;
+	    font-size: inherit;
+	    color: inherit;
+	    height: 1.47058824em;
+	    line-height: 1.47058824;
+	}
+	.container.leavedetails .leaveinfo.notpass .info .name span {
+	    color: #fff;
+	}
+	.container.leavedetails .flow>ul>li .content .ttl {
+	    font-weight: 500;
+	}
+	.container.leavedetails .flow>ul>li .avatar {
+	    width: 40px;
+	    height: 40px;
+	    font-size: 15px;
+	}
+	.container.leavedetails .leaveinfo .infodetails .box .item span {
+	    font-weight: 500;
+	    font-size: 16px;
+	}
+	.container.leavedetails .leaveinfo .explain .box .infocontent {
+	    margin: 0;
+	    flex: 1;
+	    font-weight: 500;
+	    color: #3961b0;
+	}
+	.container.leavedetails .leaveinfo.pass .info .name span {
+	      color: #FFF;
+	}
+	#fhan{
+		transform:rotate(-180deg);
+	}
+    </style>
+</head>
+<body class="ispc">
+<div class="container leavedetails">
+    <!--审核通过 调用class  pass   为通过调用  notpass-->
+
+    <div class="leaveinfo pass">
+
+
+        <div class="info">
+            <div class="avatar" style="width: 45px;height: 45px;font-size: 17px;">
+                <!-- <img src="images/temp/avatar.jpg" alt=""> -->
+                二三
+            </div>
+            <div class="name">
+
+                <span style="font-size: 16px;">
+                    一二三
+                </span>
+                <span style="font-size: 12px;color: #cac0c0fa;">审批已通过</span>
+            </div>
+        </div>
+        <div class="infodetails">
+            <div class="box">
+                <div class="item">
+                    <span class="title">所在学院</span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="box">
+                <div class="item">
+                    <span class="title">请假类型</span>
+                    <span>
+                        私事
+                    </span>
+                </div>
+                <div class="item">
+                    <span class="title">请假时长</span>
+                    <span id="qjsxs">
+                        12小时
+                    </span>
+                </div>
+            </div>
+            <div class="box">
+                <div class="item">
+                    <span class="title">请假开始时间</span>
+                    <span>
+                        2020-06-28 07时
+                    </span>
+                </div>
+                <div class="item">
+                    <span class="title">请假结束时间</span>
+                    <span>
+                        2020-06-28 19时
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="explain">
+            <div class="box">
+                <span class="title">请假事由</span>
+                <p class="infocontent">
+                    病假
+                </p>
+            </div>
+            <div class="box">
+                <span class="title">前往目的地</span>
+                <p class="infocontent">
+                    校医院
+                </p>
+            </div>
+            <div class="box">
+                <span class="title">事由说明</span>
+                <p class="infocontent">
+                    牙疼
+                </p>
+            </div>
+
+
+            <div class="box">
+                <!-- 此处的type表示请假延期还是销假；1：请假延期;2为销假 -->
+                <a href="./延期.html" style="width: 45%;height: 46px;margin-top: 15px;background-color: #d66f2b;color: #fff;" class="weui-btn bg-blue">请假延期</a>
+                <a href="./销假.html" style="width: 45%;background-color: #46ad77;color: #fff;" class="weui-btn bg-blue">销假</a>
+            </div>
+
+        </div>
+    </div>
+    <div class="flow">
+        <ul>
+            <li>
+                <!--审核通过 调用class  pass   为通过调用  notpass-->
+                <div class="avatar">
+                    二三
+                </div><!-- <img src="images/temp/avatar.jpg" alt=""> -->
+                <div class="content">
+                    <div class="ttl"><span class="text" style="font-size: 16px;">发起申请</span> <span class="time">
+                        06-25 12:14
+                    </span></div>
+
+                </div>
+            </li>
+
+            <li>
+                <!--审核通过 调用class  pass   为通过调用  notpass-->
+                <div class="avatar pass">
+                    五六
+                </div>
+                <div class="content">
+                    <div class="ttl"><span class="text" style="font-size: 16px;">
+                        四五六审核（已通过）
+                    </span> <span class="time">
+                        06-25 13:25
+                    </span></div>
+                    <div class="ctn"></div>
+                </div>
+            </li>
+
+            <li>
+                <!--审核通过 调用class  pass   为通过调用  notpass-->
+                <div class="avatar pass">
+                    八九
+                </div>
+                <div class="content">
+                    <div class="ttl"><span class="text" style="font-size: 16px;">
+                        七八九审核（已通过）
+                    </span> <span class="time">
+                        06-25 13:28
+                    </span></div>
+                    <div class="ctn"></div>
+                </div>
+            </li>
+
+
+
+
+
+            <li>
+                <div class="pointer">
+                    <i class="icon"></i>
+                </div>
+                <div class="content pointer">
+                    <div class="ttl">
+                        审批共耗时1小时14分钟
+                    </div>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div style="text-align: left;">
+        <button type="button" onclick="javascript:history.back(-1);" style="background-color:transparent;border-style:none;line-height:30px;color: #538fff;outline: none; ">
+            <i id="fhan" style="font-size: 14px;margin-right: -3px;" class="icon iconfont icon-41"></i>
+            返回
+        </button>
+    </div>
+    <div class="footer-copy-space"></div>
+</div>
+
+<script src="./请假_files/checkdev.js.下载"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#titlebtn").click(function () {
+            let titlebtn = $("#titlebtn");
+            let titlecontent = $("#titlecontent");
+            if (titlecontent.is(':hidden')) {
+                titlebtn.removeClass("up").addClass("dowm");
+                $("#titlecontent").show();
+            }else{
+                titlebtn.removeClass("dowm").addClass("up");
+                $("#titlecontent").hide();
+            }
+        });
+    });
+    $("#qssj").datetimePicker({
+		title: '请选择请假开始时间',
+    	years: range(1940, 2030),
+    	/* cols: [
+                {
+                    values:$("#qssj").val(),
+                    displayValues:$("#qssj").val().substr(0,$("#qssj").val().length-1)
+                }
+            ], */
+    	value:$("#qssj").val(),
+   		times: function () {
+        	return [];
+    	},
+        parse: function (str) {
+            return str.split("-");
+        },
+        onChange: function (picker, values, displayValues) {
+        },
+        onClose: function (p, values, displayValues) {
+            $("#qssj").val(p.value[0]+'-'+p.value[1]+'-'+p.value[2]+' '+p.value[3]+'时');
+            var qssj = $("#qssj").val();
+            var jzsj = $("#jzsj").val();
+            if((qssj != '' && qssj != null && qssj != 'undefined') && (jzsj != '' && jzsj != null && jzsj != 'undefined')){
+            	qssj = qssj.substr(0,qssj.length-1).replace(/-/g,"/");
+            	jzsj = jzsj.substr(0,jzsj.length-1).replace(/-/g,"/");
+            	var date1 = new Date(qssj);
+            	var date2 = new Date(jzsj);
+            	var s1 = date1.getTime(),s2 = date2.getTime();
+				var total = (s2 - s1)/1000;
+            	var day = parseInt(total / (24*60*60));//计算整数天数
+				var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
+				var hour = parseInt(afterDay/(60*60));//计算整数小时数
+				if(day != 0){
+					$("#qjsxs").val(day + '天' + hour + '时');
+				}else{
+					$("#qjsxs").val(hour + '时');
+				}
+            }
+        }
+	});
+	$("#jzsj").datetimePicker({
+    	title: '请选择请假开始时间',
+    	years: range(1940, 2030),
+    	value:$("#jzsj").val(),
+    	times: function () {
+        	return [];
+		},
+		parse: function (str) {
+        	return str.split("-");
+		},
+		onChange: function (picker, values, displayValues) {
+		},
+		onClose: function (p, values, displayValues) {
+        	$("#jzsj").val(p.value[0]+'-'+p.value[1]+'-'+p.value[2]+' '+p.value[3]+'时');
+        	var qssj = $("#qssj").val();
+            var jzsj = $("#jzsj").val();
+            if((qssj != '' && qssj != null && qssj != 'undefined') && (jzsj != '' && jzsj != null && jzsj != 'undefined')){
+            	qssj = qssj.substr(0,qssj.length-1).replace(/-/g,"/");
+            	jzsj = jzsj.substr(0,jzsj.length-1).replace(/-/g,"/");
+            	var date1 = new Date(qssj);
+            	var date2 = new Date(jzsj);
+            	var s1 = date1.getTime(),s2 = date2.getTime();
+				var total = (s2 - s1)/1000;
+            	var day = parseInt(total / (24*60*60));//计算整数天数
+				var afterDay = total - day*24*60*60;//取得算出天数后剩余的秒数
+				var hour = parseInt(afterDay/(60*60));//计算整数小时数
+				if(day != 0){
+					$("#qjsxs").val(day + '天' + hour + '时');
+				}else{
+					$("#qjsxs").val(hour + '时');
+				}
+            }
+		}
+	});
+</script>
+<script src="./请假_files/checkdev.js.下载"></script>
+
+
+</body></html>
