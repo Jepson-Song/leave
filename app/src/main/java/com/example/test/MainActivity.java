@@ -40,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private static Handler handler;
 
     private Button btCreate;
-    private TextView tvName, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
-    private EditText etName, etType, etDate, etReason, etDestination, etExplain, etReviewer1, etReviewer2, etAppicationDate;
-    private String strName, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
+    private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
+    private EditText etName, etSchool, etType, etDate, etReason, etDestination, etExplain, etReviewer1, etReviewer2, etAppicationDate;
+    private String strName, strSchool, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
     private int intDate, intMonth, intDay;
     private String strMonth, strDay, strName2, strReviewer12, strReviewer22;
 
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         checkPermission();
 
         etName = (EditText) findViewById(R.id.etName);
+        etSchool = (EditText)findViewById(R.id.etSchool);
         etType = (EditText) findViewById(R.id.etType);
         etDate = (EditText) findViewById(R.id.etDate);
         etReason = (EditText) findViewById(R.id.etReason);
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
         //private String strName, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
         //strName2 = sp.getString("strName2", "null");
         strName = sp.getString("strName", "某某某");
+        strSchool = sp.getString("strSchool", "某某学院");
         strType = sp.getString("strType", "私事");
         //strDuration = sp.getString("strDuration", "null");
         strDate = sp.getString("strDate", "0626");
@@ -171,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         etName.setText(strName);
+        etSchool.setText(strSchool);
         etType.setText(strType);
         etDate.setText(strDate);
         etReason.setText(strReason);
@@ -193,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         //通过editor对象写入数据
         //editor.putString("strName2", strName2);
         editor.putString("strName", strName);
+        editor.putString("strSchool", strSchool);
         editor.putString("strType", strType);
         //editor.putString("strDuration", strDuration);
         editor.putString("strDate", strDate);
@@ -217,6 +221,8 @@ public class MainActivity extends AppCompatActivity {
     private void getData() {
         strName = etName.getText().toString().trim();
         Log.d(TAG, "read: strName=" + strName);
+        strSchool = etSchool.getText().toString().trim();
+        Log.d(TAG, "read: strSchool=" + strSchool);
         strType = etType.getText().toString().trim();
         Log.d(TAG, "read: strType=" + strType);
         strDate = etDate.getText().toString().trim();
@@ -283,52 +289,55 @@ public class MainActivity extends AppCompatActivity {
                 case 97:
                     line = strName;
                     break;
-                case 113:
+                case 107:
+                    line = strSchool;
+                    break;
+                case 115:
                     line = strType;
                     break;
-                case 119:
+                case 121:
                     line = strDuration;
                     break;
-                case 127:
+                case 129:
                     line = strStart;
                     break;
-                case 133:
+                case 135:
                     line = strEnd;
                     break;
-                case 142:
+                case 144:
                     line = strReason;
                     break;
-                case 148:
+                case 150:
                     line = strDestination;
                     break;
-                case 154:
+                case 156:
                     line = strExplain;
                     break;
-                case 172:
+                case 174:
                     line = strName2;
                     break;
-                case 176:
+                case 178:
                     line = strApplicationTime;
                     break;
-                case 185:
+                case 187:
                     line = strReviewer12;
                     break;
-                case 189:
+                case 191:
                     line = strRev1Pass;
                     break;
-                case 191:
+                case 193:
                     line = strRev1Time;
                     break;
-                case 200:
+                case 202:
                     line = strReviewer22;
                     break;
-                case 204:
+                case 206:
                     line = strRev2Pass;
                     break;
-                case 206:
+                case 208:
                     line = strRev2Time;
                     break;
-                case 222:
+                case 224:
                     line = strApplicationCost;
                     break;
             }
