@@ -62,8 +62,12 @@ public class MainActivity extends AppCompatActivity {
     private String strRev1Pass = "四五六审核（已通过）";
     private String strRev1Time = "06-25 13:25";
     private String strRev2Pass = "七八九审核（已通过）";
-    private String strRev2Time = "06-25 13:28";
+    private String strRev2Time = "06-25 14:28";
     private String strApplicationCost = "审批共耗时2小时14分钟";
+
+    private String strApplicationHour = "12:14";
+    private String strRev1Hour = "13:25";
+    private String strRev2Hour = "14:28";
 
     private Context context;
     private String newPath, newWebPath, newDirPath, newImgDirPath, newDelayPath, newDelayDirPath, newCancelPath, newCancelDirPath;
@@ -245,9 +249,9 @@ public class MainActivity extends AppCompatActivity {
         intApplicationDay = intApplicationDate % 100;
         strApplicationMonth = String.format("%02d", intApplicationMonth);
         strApplicationDay = String.format("%02d", intApplicationDay);
-        strApplicationTime = strApplicationMonth + "-" + strApplicationDay + " 12:14";
-        strRev1Time = strApplicationMonth + "-" + strApplicationDay + " 13:25";
-        strRev2Time = strApplicationMonth + "-" + strApplicationDay + " 14:28";
+        strApplicationTime = strApplicationMonth + "-" + strApplicationDay + " " + strApplicationHour;
+        strRev1Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev1Hour;
+        strRev2Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev2Hour;
 
         strDuration = "12小时";
         strStart = "2020-"+strMonth+"-"+strDay+" 07时";
