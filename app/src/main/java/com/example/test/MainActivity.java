@@ -38,9 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     //private static final int COPY_FALSE = -1;
     //private static Handler handler;
-
+    
     private Button btCreate;
-    private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
+    //private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
     private EditText etName, etSchool, etType, etDate, etReason, etDestination, etExplain, etReviewer1, etReviewer2, etAppicationDate;
     private String strName, strSchool, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
     private int intDate, intMonth, intDay;
@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
     private String strRev2Hour = "14:28";
 
     private Context context;
-    private String newPath, newLeavePath, newLeaveDirPath, newImgDirPath, newDelayPath, newDelayDirPath, newCancelPath, newCancelDirPath;
+    //private String newLeavePath, newDelayPath, newCancelPath;
+    private String newPath, newLeaveDirPath, newDelayDirPath, newCancelDirPath, newImgDirPath;
 
     //用SharedPreferences存储用户输入的数据
     private SharedPreferences sp;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
-        //三个网页以及相关资源文件存储在sd卡中的新位置
+        //网页以及相关资源文件存储在sd卡中的新位置
         newPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         Log.d(TAG, "onCreate: newPath="+newPath);
 
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: newImgDirPath="+newImgDirPath);
 
         //检查APP权限
-        checkPermission();
+        //checkPermission();
 
         //调用控件
         etName = (EditText) findViewById(R.id.etName);
@@ -226,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
         //strRev2Time = sp.getString("strRev2Time", strReviewer2);
         //strApplicationCost = sp.getString("strApplicationCost", "null");
         strApplicationDate = sp.getString("strApplicationDate", "0625");
-
 
         etName.setText(strName);
         etSchool.setText(strSchool);

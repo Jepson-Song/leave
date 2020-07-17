@@ -16,7 +16,7 @@ import java.io.File;
 public class WebActivity extends AppCompatActivity {
     private static final String TAG = "WebActivity";
     private WebView wvWeb;
-    private String webName = "请假.html";
+    private String leaveName = "请假.html";
 
 
     private Context context;
@@ -30,7 +30,7 @@ public class WebActivity extends AppCompatActivity {
         context = getApplicationContext();
         newPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         Log.d(TAG, "onCreate: newPath="+newPath);
-        newWebPath = newPath + File.separator + webName;
+        newWebPath = newPath + File.separator + leaveName;
         Log.d(TAG, "onCreate: newWebPath="+newWebPath);
 
         openWeb();
