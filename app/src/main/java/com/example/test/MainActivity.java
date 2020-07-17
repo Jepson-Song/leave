@@ -124,24 +124,24 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                copyFilesFassets(context, leaveDirName, newDirPath);
+                copyFilesFromAssets(context, leaveDirName, newDirPath);
 
                 try {
                     createDelayWeb(newPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //copyFilesFassets(context, delayName, newDelayPath);
-                copyFilesFassets(context, delayDirName, newDelayDirPath);
+                //copyFilesFromAssets(context, delayName, newDelayPath);
+                copyFilesFromAssets(context, delayDirName, newDelayDirPath);
                 try {
                     createCancelWeb(newPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //copyFilesFassets(context, cancelName, newCancelPath);
-                copyFilesFassets(context, cancelDirName, newCancelDirPath);
+                //copyFilesFromAssets(context, cancelName, newCancelPath);
+                copyFilesFromAssets(context, cancelDirName, newCancelDirPath);
 
-                copyFilesFassets(context, imgDirName, newImgDirPath);
+                copyFilesFromAssets(context, imgDirName, newImgDirPath);
 
                 Intent intent = new Intent(MainActivity.this, WebActivity.class);
                 startActivity(intent);
@@ -151,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容
+     */
     private void initData(){
         sp = getSharedPreferences("User", Context.MODE_PRIVATE);
         //private String strName, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
@@ -188,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
         etAppicationDate.setText(strApplicationDate);
     }
 
+    /**
+     * 将用户的输入的数据保存下来，以便用户下次打开APP时将数据再显示出来
+     */
     private void saveData(){
         /**
          * 获取SharedPreferenced对象
@@ -222,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    /**
+     * 从页面控件读取数据
+     */
     private void getData() {
         strName = etName.getText().toString().trim();
         Log.d(TAG, "read: strName=" + strName);
@@ -265,6 +274,12 @@ public class MainActivity extends AppCompatActivity {
         strRev2Pass = strReviewer2 + "审核（已通过）";
     }
 
+    /**
+     * 得到两个字的姓名，放在头像处
+     * 
+     * @param name 原姓名
+     * @return 两个字的姓名
+     */
     private String getName2(String name) {
         Log.d(TAG, "getName2: "+name+" len="+name.length());
         String name2;
@@ -277,6 +292,12 @@ public class MainActivity extends AppCompatActivity {
         return name2;
     }
 
+    /**
+     * 创建新的请假页面
+     *
+     * @param newPath sd卡内的某个路径
+     * @throws IOException
+     */
     private void createLeaveWeb(String newPath) throws IOException {
         InputStream is = this.getResources().getAssets().open(leaveName);
         InputStreamReader isr = new InputStreamReader(is);
@@ -378,6 +399,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 创建新的延期页面
+     *
+     * @param newPath
+     * @throws IOException
+     */
     private void createDelayWeb(String newPath) throws IOException {
         InputStream is = this.getResources().getAssets().open(delayName);
         InputStreamReader isr = new InputStreamReader(is);
@@ -422,16 +449,16 @@ public class MainActivity extends AppCompatActivity {
 
         File file = new File(newPath+File.separator+delayName);
         if (file.exists()){
-            Log.d(TAG, "createLeaveWeb: web文件已存在");
+            Log.d(TAG, "createDelayWeb: web文件已存在");
         }else{
             try {
                 file.createNewFile();
-                Log.d(TAG, "createLeaveWeb: 创建web文件");
+                Log.d(TAG, "createDelayWeb: 创建web文件");
             } catch (IOException e){
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, "createLeaveWeb: 向web文件写入数据");
+        Log.d(TAG, "createDelayWeb: 向web文件写入数据");
         try {
             FileWriter fw = new FileWriter(file);
             for (int i = 0; i<=list.size()-1; i++){
@@ -439,13 +466,19 @@ public class MainActivity extends AppCompatActivity {
                 fw.flush();
             }
             fw.close();
-            Log.d(TAG, "createLeaveWeb: 写入web成功");
+            Log.d(TAG, "createDelayWeb: 写入web成功");
         } catch (IOException e){
-            Log.d(TAG, "createLeaveWeb: 写入web失败");
+            Log.d(TAG, "createDelayWeb: 写入web失败");
             e.printStackTrace();
         }
     }
 
+    /**
+     * 创建新的销假页面
+     *
+     * @param newPath
+     * @throws IOException
+     */
     private void createCancelWeb(String newPath) throws IOException {
         InputStream is = this.getResources().getAssets().open(cancelName);
         InputStreamReader isr = new InputStreamReader(is);
@@ -490,16 +523,16 @@ public class MainActivity extends AppCompatActivity {
 
         File file = new File(newPath+File.separator+cancelName);
         if (file.exists()){
-            Log.d(TAG, "createLeaveWeb: web文件已存在");
+            Log.d(TAG, "createCancelWeb: web文件已存在");
         }else{
             try {
                 file.createNewFile();
-                Log.d(TAG, "createLeaveWeb: 创建web文件");
+                Log.d(TAG, "createCancelWeb: 创建web文件");
             } catch (IOException e){
                 e.printStackTrace();
             }
         }
-        Log.d(TAG, "createLeaveWeb: 向web文件写入数据");
+        Log.d(TAG, "createCancelWeb: 向web文件写入数据");
         try {
             FileWriter fw = new FileWriter(file);
             for (int i = 0; i<=list.size()-1; i++){
@@ -507,21 +540,22 @@ public class MainActivity extends AppCompatActivity {
                 fw.flush();
             }
             fw.close();
-            Log.d(TAG, "createLeaveWeb: 写入web成功");
+            Log.d(TAG, "createCancelWeb: 写入web成功");
         } catch (IOException e){
-            Log.d(TAG, "createLeaveWeb: 写入web失败");
+            Log.d(TAG, "createCancelWeb: 写入web失败");
             e.printStackTrace();
         }
     }
 
     /**
      * 从assets目录中复制整个文件夹内容
+     * 将运行html所需要的相关js文件和css文件以及图片资源拷贝到sd卡中
      *
      * @param context Context 使用CopyFiles类的Activity
      * @param leaveDirName String  原文件夹名  如：leaveDirName
      * @param newPath String  复制后路径  如：xx:/bb/cc
      */
-    public void copyFilesFassets(Context context, String leaveDirName, String newPath) {
+    public void copyFilesFromAssets(Context context, String leaveDirName, String newPath) {
         try {
             String fileNames[] = context.getAssets().list(leaveDirName);//获取assets目录下的所有文件及目录名
 
@@ -532,7 +566,7 @@ public class MainActivity extends AppCompatActivity {
                 File file = new File(newPath);
                 file.mkdirs();//如果文件夹不存在，则递归
                 for (String fileName : fileNames) {
-                    copyFilesFassets(context, leaveDirName + "/" + fileName, newPath + "/" + fileName);
+                    copyFilesFromAssets(context, leaveDirName + "/" + fileName, newPath + "/" + fileName);
                 }
             } else {//如果是文件
                 Log.d(TAG, "oldPath="+leaveDirName);
@@ -558,6 +592,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 检查app权限（好像不需要）
+     */
     public void checkPermission() {
         boolean isGranted = true;
         if (android.os.Build.VERSION.SDK_INT >= 23) {
@@ -566,6 +603,7 @@ public class MainActivity extends AppCompatActivity {
                 isGranted = false;
             }
             if (this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                //读sd卡权限
                 isGranted = false;
             }
             Log.i("cbs","isGranted == "+isGranted);
