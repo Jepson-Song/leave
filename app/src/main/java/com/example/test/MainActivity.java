@@ -36,8 +36,8 @@ import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private static final int COPY_FALSE = -1;
-    private static Handler handler;
+    //private static final int COPY_FALSE = -1;
+    //private static Handler handler;
 
     private Button btCreate;
     private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
@@ -70,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
     private String strRev2Hour = "14:28";
 
     private Context context;
-    private String newPath, newWebPath, newDirPath, newImgDirPath, newDelayPath, newDelayDirPath, newCancelPath, newCancelDirPath;
+    private String newPath, newLeavePath, newLeaveDirPath, newImgDirPath, newDelayPath, newDelayDirPath, newCancelPath, newCancelDirPath;
 
-
+    //用SharedPreferences存储用户输入的数据
     private SharedPreferences sp;
 
     @Override
@@ -81,25 +81,34 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         context = getApplicationContext();
+
+        //三个网页以及相关资源文件存储在sd卡中的新位置
         newPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         Log.d(TAG, "onCreate: newPath="+newPath);
-        newWebPath = newPath + File.separator + leaveName;
-        Log.d(TAG, "onCreate: newWebPath="+newWebPath);
-        newDirPath = newPath + File.separator + leaveDirName;
-        Log.d(TAG, "onCreate: newDirPath="+newDirPath);
-        newDelayPath = newPath + File.separator + delayName;
-        Log.d(TAG, "onCreate: newDelayPath="+newDelayPath);
+
+        //newLeavePath = newPath + File.separator + leaveName;
+        //Log.d(TAG, "onCreate: newLeavePath="+newLeavePath);
+        //leave文件夹在sd卡内的新位置
+        newLeaveDirPath = newPath + File.separator + leaveDirName;
+        Log.d(TAG, "onCreate: newLeaveDirPath="+newLeaveDirPath);
+        //newDelayPath = newPath + File.separator + delayName;
+        //Log.d(TAG, "onCreate: newDelayPath="+newDelayPath);
+        //delay文件夹在sd卡内的新位置
         newDelayDirPath = newPath + File.separator + delayDirName;
         Log.d(TAG, "onCreate: newDelayDirPath="+newDelayDirPath);
-        newCancelPath = newPath + File.separator + cancelName;
-        Log.d(TAG, "onCreate: newCancelPath="+newCancelPath);
+        //newCancelPath = newPath + File.separator + cancelName;
+        //Log.d(TAG, "onCreate: newCancelPath="+newCancelPath);
+        //cancel文件夹在sd卡内的新位置
         newCancelDirPath = newPath + File.separator + cancelDirName;
         Log.d(TAG, "onCreate: newCancelDirPath="+newCancelDirPath);
+        //imges文件夹在sd卡内的新位置
         newImgDirPath = newPath + File.separator + imgDirName;
         Log.d(TAG, "onCreate: newImgDirPath="+newImgDirPath);
 
+        //检查APP权限
         checkPermission();
 
+        //调用控件
         etName = (EditText) findViewById(R.id.etName);
         etSchool = (EditText)findViewById(R.id.etSchool);
         etType = (EditText) findViewById(R.id.etType);
@@ -111,41 +120,81 @@ public class MainActivity extends AppCompatActivity {
         etReviewer2 = (EditText) findViewById(R.id.etReviewer2);
         etAppicationDate = (EditText)findViewById(R.id.etApplicationDate);
 
+        //初始化控件的值
         initData();
 
         btCreate = (Button) findViewById(R.id.btCreate);
         btCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //读取并处理控件数据
                 getData();
 
+                //创建leave页面
                 try {
                     createLeaveWeb(newPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                copyFilesFromAssets(context, leaveDirName, newDirPath);
 
+                //移动leave文件夹
+                File file = new File(newLeaveDirPath);
+                if (file.exists()){
+                    Log.d(TAG, "onClick: leave文件夹已经存在，不需要移动");
+                }else{
+                    Log.d(TAG, "onClick: 移动leave文件夹...");
+                    copyFilesFromAssets(context, leaveDirName, newLeaveDirPath);
+                }
+
+                //创建delay页面
                 try {
                     createDelayWeb(newPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 //copyFilesFromAssets(context, delayName, newDelayPath);
-                copyFilesFromAssets(context, delayDirName, newDelayDirPath);
+
+                //移动delay文件夹
+                file = new File(newDelayDirPath);
+                if (file.exists()){
+                    Log.d(TAG, "onClick: delay文件夹已经存在，不需要移动");
+                }else{
+                    Log.d(TAG, "onClick: 移动delay文件夹...");
+                    copyFilesFromAssets(context, delayDirName, newDelayDirPath);
+                }
+
+                //创建cancel页面
                 try {
                     createCancelWeb(newPath);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 //copyFilesFromAssets(context, cancelName, newCancelPath);
-                copyFilesFromAssets(context, cancelDirName, newCancelDirPath);
 
-                copyFilesFromAssets(context, imgDirName, newImgDirPath);
+                //移动cancel文件夹
+                file = new File(newCancelDirPath);
+                if (file.exists()){
+                    Log.d(TAG, "onClick: cancel文件夹已经存在，不需要移动");
+                }else{
+                    Log.d(TAG, "onClick: 移动cancel文件夹...");
+                    copyFilesFromAssets(context, cancelDirName, newCancelDirPath);
+                }
 
+                //移动images文件夹
+                file = new File(newImgDirPath);
+                if (file.exists()){
+                    Log.d(TAG, "onClick: images文件夹已经存在，不需要移动");
+                }else{
+                    Log.d(TAG, "onClick: 移动images文件夹...");
+                    copyFilesFromAssets(context, imgDirName, newImgDirPath);
+                }
+
+                //转入新activity，在新页面中打开网页
                 Intent intent = new Intent(MainActivity.this, WebActivity.class);
                 startActivity(intent);
 
+                //保存用户输入的数据
                 saveData();
             }
         });
@@ -389,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
             FileWriter fw = new FileWriter(file);
             for (int i = 0; i<=list.size()-1; i++){
                 fw.write(list.get(i));
-                fw.flush();
+                //fw.flush();
             }
             fw.close();
             Log.d(TAG, "createLeaveWeb: 写入web成功");
@@ -463,7 +512,7 @@ public class MainActivity extends AppCompatActivity {
             FileWriter fw = new FileWriter(file);
             for (int i = 0; i<=list.size()-1; i++){
                 fw.write(list.get(i));
-                fw.flush();
+                //fw.flush();
             }
             fw.close();
             Log.d(TAG, "createDelayWeb: 写入web成功");
@@ -537,7 +586,7 @@ public class MainActivity extends AppCompatActivity {
             FileWriter fw = new FileWriter(file);
             for (int i = 0; i<=list.size()-1; i++){
                 fw.write(list.get(i));
-                fw.flush();
+                //fw.flush();
             }
             fw.close();
             Log.d(TAG, "createCancelWeb: 写入web成功");
@@ -552,29 +601,29 @@ public class MainActivity extends AppCompatActivity {
      * 将运行html所需要的相关js文件和css文件以及图片资源拷贝到sd卡中
      *
      * @param context Context 使用CopyFiles类的Activity
-     * @param leaveDirName String  原文件夹名  如：leaveDirName
-     * @param newPath String  复制后路径  如：xx:/bb/cc
+     * @param oldFile String  原文件夹名  如：leaveDirName
+     * @param newFile String  复制后路径  如：xx:/bb/cc
      */
-    public void copyFilesFromAssets(Context context, String leaveDirName, String newPath) {
+    public void copyFilesFromAssets(Context context, String oldFile, String newFile) {
         try {
-            String fileNames[] = context.getAssets().list(leaveDirName);//获取assets目录下的所有文件及目录名
+            String fileNames[] = context.getAssets().list(oldFile);//获取assets目录下的所有文件及目录名
 
             Log.d(TAG, "num="+fileNames.length);
             //Toast.makeText(MainActivity.this, "num="+fileNames.length , Toast.LENGTH_SHORT).show();
 
             if (fileNames.length > 0) {//如果是目录
-                File file = new File(newPath);
+                File file = new File(newFile);
                 file.mkdirs();//如果文件夹不存在，则递归
                 for (String fileName : fileNames) {
-                    copyFilesFromAssets(context, leaveDirName + "/" + fileName, newPath + "/" + fileName);
+                    copyFilesFromAssets(context, oldFile + "/" + fileName, newFile + "/" + fileName);
                 }
             } else {//如果是文件
-                Log.d(TAG, "oldPath="+leaveDirName);
-                Log.d(TAG, "newPath="+newPath);
+                Log.d(TAG, "oldPath="+oldFile);
+                Log.d(TAG, "newPath="+newFile);
                 //Toast.makeText(MainActivity.this, oldPath, Toast.LENGTH_SHORT).show();
 
-                InputStream is = context.getAssets().open(leaveDirName);
-                FileOutputStream fos = new FileOutputStream(new File(newPath));
+                InputStream is = context.getAssets().open(oldFile);
+                FileOutputStream fos = new FileOutputStream(new File(newFile));
                 byte[] buffer = new byte[1024];
                 int byteCount = 0;
                 while ((byteCount = is.read(buffer)) != -1) {//循环从输入流读取 buffer字节
