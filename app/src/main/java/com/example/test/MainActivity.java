@@ -7,9 +7,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -19,6 +21,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.test.ui.ProgressButton;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -39,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     //private static final int COPY_FALSE = -1;
     //private static Handler handler;
     
-    private Button btCreate;
+    //private Button btCreate;
     //private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
     private EditText etName, etSchool, etType, etDate, etReason, etDestination, etExplain, etReviewer1, etReviewer2, etAppicationDate;
     private String strName, strSchool, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
@@ -75,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     //用SharedPreferences存储用户输入的数据
     private SharedPreferences sp;
+
+    ProgressButton pb_button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,81 +131,20 @@ public class MainActivity extends AppCompatActivity {
         //初始化控件的值
         initData();
 
-        btCreate = (Button) findViewById(R.id.btCreate);
-        btCreate.setOnClickListener(new View.OnClickListener() {
+        pb_button=(ProgressButton)findViewById(R.id.pb_btn);
+        pb_button.setBgColor(Color.rgb(38, 188, 213));
+        pb_button.setTextColor(Color.WHITE);
+        pb_button.setProColor(Color.WHITE);
+        pb_button.setButtonText("生成");
+        pb_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //读取并处理控件数据
-                getData();
-
-                //创建leave页面
-                try {
-                    createLeaveWeb(newPath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                //移动leave文件夹
-                File file = new File(newLeaveDirPath);
-                if (file.exists()){
-                    Log.d(TAG, "onClick: leave文件夹已经存在，不需要移动");
-                }else{
-                    Log.d(TAG, "onClick: 移动leave文件夹...");
-                    copyFilesFromAssets(context, leaveDirName, newLeaveDirPath);
-                }
-
-                //创建delay页面
-                try {
-                    createDelayWeb(newPath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //copyFilesFromAssets(context, delayName, newDelayPath);
-
-                //移动delay文件夹
-                file = new File(newDelayDirPath);
-                if (file.exists()){
-                    Log.d(TAG, "onClick: delay文件夹已经存在，不需要移动");
-                }else{
-                    Log.d(TAG, "onClick: 移动delay文件夹...");
-                    copyFilesFromAssets(context, delayDirName, newDelayDirPath);
-                }
-
-                //创建cancel页面
-                try {
-                    createCancelWeb(newPath);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //copyFilesFromAssets(context, cancelName, newCancelPath);
-
-                //移动cancel文件夹
-                file = new File(newCancelDirPath);
-                if (file.exists()){
-                    Log.d(TAG, "onClick: cancel文件夹已经存在，不需要移动");
-                }else{
-                    Log.d(TAG, "onClick: 移动cancel文件夹...");
-                    copyFilesFromAssets(context, cancelDirName, newCancelDirPath);
-                }
-
-                //移动images文件夹
-                file = new File(newImgDirPath);
-                if (file.exists()){
-                    Log.d(TAG, "onClick: images文件夹已经存在，不需要移动");
-                }else{
-                    Log.d(TAG, "onClick: 移动images文件夹...");
-                    copyFilesFromAssets(context, imgDirName, newImgDirPath);
-                }
-
-                //转入新activity，在新页面中打开网页
-                Intent intent = new Intent(MainActivity.this, WebActivity.class);
-                startActivity(intent);
-
-                //保存用户输入的数据
-                saveData();
+                pb_button.startAnim();
+                Message m=mHandler.obtainMessage();
+                mHandler.sendMessageDelayed(m,1500);
             }
         });
+
     }
 
     /**
@@ -667,4 +613,93 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+    private Handler mHandler=new Handler()
+    {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            //读取并处理控件数据
+            getData();
+
+            //创建leave页面
+            try {
+                createLeaveWeb(newPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //移动leave文件夹
+            File file = new File(newLeaveDirPath);
+            if (file.exists()){
+                Log.d(TAG, "onClick: leave文件夹已经存在，不需要移动");
+            }else{
+                Log.d(TAG, "onClick: 移动leave文件夹...");
+                copyFilesFromAssets(context, leaveDirName, newLeaveDirPath);
+            }
+
+            //创建delay页面
+            try {
+                createDelayWeb(newPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //copyFilesFromAssets(context, delayName, newDelayPath);
+
+            //移动delay文件夹
+            file = new File(newDelayDirPath);
+            if (file.exists()){
+                Log.d(TAG, "onClick: delay文件夹已经存在，不需要移动");
+            }else{
+                Log.d(TAG, "onClick: 移动delay文件夹...");
+                copyFilesFromAssets(context, delayDirName, newDelayDirPath);
+            }
+
+            //创建cancel页面
+            try {
+                createCancelWeb(newPath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //copyFilesFromAssets(context, cancelName, newCancelPath);
+
+            //移动cancel文件夹
+            file = new File(newCancelDirPath);
+            if (file.exists()){
+                Log.d(TAG, "onClick: cancel文件夹已经存在，不需要移动");
+            }else{
+                Log.d(TAG, "onClick: 移动cancel文件夹...");
+                copyFilesFromAssets(context, cancelDirName, newCancelDirPath);
+            }
+
+            //移动images文件夹
+            file = new File(newImgDirPath);
+            if (file.exists()){
+                Log.d(TAG, "onClick: images文件夹已经存在，不需要移动");
+            }else{
+                Log.d(TAG, "onClick: 移动images文件夹...");
+                copyFilesFromAssets(context, imgDirName, newImgDirPath);
+            }
+
+            //转入新activity，在新页面中打开网页
+//            Intent intent = new Intent(MainActivity.this, WebActivity.class);
+//            startActivity(intent);
+
+            //保存用户输入的数据
+            saveData();
+
+            pb_button.stopAnim(new ProgressButton.OnStopAnim() {
+                @Override
+                public void Stop() {
+
+                    Intent i=new Intent();
+                    i.setClass(MainActivity.this,WebActivity.class);
+                    startActivity(i);
+                }
+            });
+
+        }
+    };
 }
