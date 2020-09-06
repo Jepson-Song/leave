@@ -3,6 +3,7 @@ package com.example.test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,14 +13,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.test.ui.ProgressButton;
@@ -36,7 +40,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -45,9 +53,9 @@ public class MainActivity extends AppCompatActivity {
     
     //private Button btCreate;
     //private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
-    private EditText etName, etSchool, etType, etDate, etReason, etDestination, etExplain, etReviewer1, etReviewer2, etAppicationDate;
+    private EditText etName, etSchool, etType,  etReason, etDestination, etExplain, etReviewer1, etReviewer2;//etDate,etAppicationDate;
     private String strName, strSchool, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
-    private int intDate, intMonth, intDay;
+    private int intDate, intYear, intMonth, intDay;
     private String strMonth, strDay, strName2, strReviewer12, strReviewer22;
 
     private String leaveName = "请假.html";
@@ -62,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private String strEnd = "2020-06-28 19时";
     private String strApplicationTime = "06-25 12:14";
     private String strApplicationDate, strApplicationMonth, strApplicationDay;
-    private int intApplicationDate, intApplicationMonth, intApplicationDay;
+    private int intApplicationDate, intApplicationYear, intApplicationMonth, intApplicationDay;
     private String strRev1Pass = "四五六审核（已通过）";
     private String strRev1Time = "06-25 13:25";
     private String strRev2Pass = "七八九审核（已通过）";
@@ -80,8 +88,24 @@ public class MainActivity extends AppCompatActivity {
     //用SharedPreferences存储用户输入的数据
     private SharedPreferences sp;
 
-    ProgressButton pb_button;
+    ProgressButton pb_button; //动画按钮
 
+    private DatePicker datapicker;
+    private Calendar cal;//显示当前日期
+    private int year;
+    private int month;
+    private int day;
+    private int hour;
+    private int minute;
+
+
+
+    //日期对话框
+    private DatePickerDialog datePickerDialog ;
+    private EditText editText ;
+    private Button btDate, btApplicationDate;
+
+    private int tmpYear, tmpMonth, tmpDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,46 +116,44 @@ public class MainActivity extends AppCompatActivity {
 
         //网页以及相关资源文件存储在sd卡中的新位置
         newPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        Log.d(TAG, "onCreate: newPath="+newPath);
+        Log.d(TAG, "onCreate: newPath=" + newPath);
 
         //newLeavePath = newPath + File.separator + leaveName;
         //Log.d(TAG, "onCreate: newLeavePath="+newLeavePath);
         //leave文件夹在sd卡内的新位置
         newLeaveDirPath = newPath + File.separator + leaveDirName;
-        Log.d(TAG, "onCreate: newLeaveDirPath="+newLeaveDirPath);
+        Log.d(TAG, "onCreate: newLeaveDirPath=" + newLeaveDirPath);
         //newDelayPath = newPath + File.separator + delayName;
         //Log.d(TAG, "onCreate: newDelayPath="+newDelayPath);
         //delay文件夹在sd卡内的新位置
         newDelayDirPath = newPath + File.separator + delayDirName;
-        Log.d(TAG, "onCreate: newDelayDirPath="+newDelayDirPath);
+        Log.d(TAG, "onCreate: newDelayDirPath=" + newDelayDirPath);
         //newCancelPath = newPath + File.separator + cancelName;
         //Log.d(TAG, "onCreate: newCancelPath="+newCancelPath);
         //cancel文件夹在sd卡内的新位置
         newCancelDirPath = newPath + File.separator + cancelDirName;
-        Log.d(TAG, "onCreate: newCancelDirPath="+newCancelDirPath);
+        Log.d(TAG, "onCreate: newCancelDirPath=" + newCancelDirPath);
         //imges文件夹在sd卡内的新位置
         newImgDirPath = newPath + File.separator + imgDirName;
-        Log.d(TAG, "onCreate: newImgDirPath="+newImgDirPath);
+        Log.d(TAG, "onCreate: newImgDirPath=" + newImgDirPath);
 
         //检查APP权限
         //checkPermission();
 
         //调用控件
         etName = (EditText) findViewById(R.id.etName);
-        etSchool = (EditText)findViewById(R.id.etSchool);
+        etSchool = (EditText) findViewById(R.id.etSchool);
         etType = (EditText) findViewById(R.id.etType);
-        etDate = (EditText) findViewById(R.id.etDate);
+//        etDate = (EditText) findViewById(R.id.etDate);
         etReason = (EditText) findViewById(R.id.etReason);
         etDestination = (EditText) findViewById(R.id.etDestination);
         etExplain = (EditText) findViewById(R.id.etExplain);
         etReviewer1 = (EditText) findViewById(R.id.etReviewer1);
         etReviewer2 = (EditText) findViewById(R.id.etReviewer2);
-        etAppicationDate = (EditText)findViewById(R.id.etApplicationDate);
+//        etAppicationDate = (EditText) findViewById(R.id.etApplicationDate);
 
-        //初始化控件的值
-        initData();
 
-        pb_button=(ProgressButton)findViewById(R.id.pb_btn);
+        pb_button = (ProgressButton) findViewById(R.id.pb_btn);
         pb_button.setBgColor(Color.rgb(38, 188, 213));
         pb_button.setTextColor(Color.WHITE);
         pb_button.setProColor(Color.WHITE);
@@ -140,10 +162,64 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 pb_button.startAnim();
-                Message m=mHandler.obtainMessage();
-                mHandler.sendMessageDelayed(m,1500);
+                Message m = mHandler.obtainMessage();
+                mHandler.sendMessageDelayed(m, 1500);
             }
         });
+
+        //初始化日历
+        Calendar calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+        hour = calendar.get(Calendar.HOUR_OF_DAY);
+        minute = calendar.get(Calendar.MINUTE);
+
+        btDate = (Button)findViewById(R.id.btDate);
+        btDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        month = month + 1;
+                        // TODO Auto-generated method stub
+//                        intYear = year;
+//                        intMonth = month;
+//                        intDay = day;
+//                        String text = year + "-" + (month + 1) + "-" + day;
+//                        btDate.setText(year + "-" + (month + 1) + "-" + day);
+//                        strDate = String.format("%02d", month)+String.format("%02d", day);
+                        btDate.setText(String.format("%02d", month)+String.format("%02d", day));
+                    }
+                }, year, month, day).show();
+            }
+        });
+
+        btApplicationDate = (Button)findViewById(R.id.btApplicationDate);
+        btApplicationDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        month = month + 1;
+                        // TODO Auto-generated method stub
+//                        intApplicationYear = year;
+//                        intApplicationMonth = month;
+//                        intApplicationDay = day;
+//                        String text = year + "-" + (month + 1) + "-" + day;
+//                        btApplicationDate.setText(year + "-" + (month + 1) + "-" + day);
+//                        strApplicationDate = String.format("%02d", month)+String.format("%02d", day);
+                        btApplicationDate.setText(String.format("%02d", month)+String.format("%02d", day));
+                    }
+                }, year, month, day).show();
+            }
+        });
+
+
+        //初始化控件的值
+        initData();
 
     }
 
@@ -177,13 +253,13 @@ public class MainActivity extends AppCompatActivity {
         etName.setText(strName);
         etSchool.setText(strSchool);
         etType.setText(strType);
-        etDate.setText(strDate);
+        btDate.setText(strDate);
         etReason.setText(strReason);
         etDestination.setText(strDestination);
         etExplain.setText(strExplain);
         etReviewer1.setText(strReviewer1);
         etReviewer2.setText(strReviewer2);
-        etAppicationDate.setText(strApplicationDate);
+        btApplicationDate.setText(strApplicationDate);
     }
 
     /**
@@ -233,26 +309,29 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "read: strSchool=" + strSchool);
         strType = etType.getText().toString().trim();
         Log.d(TAG, "read: strType=" + strType);
-        strDate = etDate.getText().toString().trim();
+        strDate = btDate.getText().toString().trim();
         Log.d(TAG, "read: strDate=" + strDate);
         strReason = etReason.getText().toString().trim();
         strDestination = etDestination.getText().toString().trim();
         strExplain = etExplain.getText().toString().trim();
         strReviewer1 = etReviewer1.getText().toString().trim();
         strReviewer2 = etReviewer2.getText().toString().trim();
-        strApplicationDate = etAppicationDate.getText().toString().trim();
+        strApplicationDate = btApplicationDate.getText().toString().trim();
 
         intDate = Integer.parseInt(strDate);
         intMonth = intDate / 100;
         intDay = intDate % 100;
+
         strMonth = String.format("%02d", intMonth);
         strDay = String.format("%02d", intDay);
 
         intApplicationDate = Integer.parseInt(strApplicationDate);
         intApplicationMonth = intApplicationDate / 100;
         intApplicationDay = intApplicationDate % 100;
+
         strApplicationMonth = String.format("%02d", intApplicationMonth);
         strApplicationDay = String.format("%02d", intApplicationDay);
+
         strApplicationTime = strApplicationMonth + "-" + strApplicationDay + " " + strApplicationHour;
         strRev1Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev1Hour;
         strRev2Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev2Hour;
