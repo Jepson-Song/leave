@@ -3,9 +3,11 @@ package com.example.test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -47,6 +49,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -92,7 +95,14 @@ public class MainActivity extends AppCompatActivity {
     ProgressButton pb_button; //动画按钮
 
     private Button btStartDate, btStartTime, btEndDate, btEndTime, btApplicationDate;
+    private Button btAuthor;
 
+    private String[] randStrs = new String[]{
+            "打破假闭环！",
+            "基础扎实、工作踏实、作风朴实、开拓创新。",
+            "公为天下、报效祖国，\n诚实守信、襟怀坦荡，\n勇猛精进、敢为人先，\n毅然果决、坚韧不拔。",
+            "西岳轩昂,北斗辉煌,泽被万方,化育先翔。巍哉学府,辈出栋梁,重德厚生,国乃盛强。千仞之墙,百炼之钢,镂木铄金,飞天巡洋。公诚勇毅,永矢毋忘,中华灿烂,工大无疆。"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,9 +163,11 @@ public class MainActivity extends AppCompatActivity {
         btEndTime = (Button)findViewById(R.id.btEndTime);
         btEndTime.setOnClickListener(new ButtonListener());
 
-
         btApplicationDate = (Button)findViewById(R.id.btApplicationDate);
         btApplicationDate.setOnClickListener(new ButtonListener());
+
+        btAuthor = (Button)findViewById(R.id.btAuthor);
+        btAuthor.setOnClickListener(new ButtonListener());
 
         pb_button = (ProgressButton) findViewById(R.id.pb_btn);
         pb_button.setBgColor(Color.rgb(38, 188, 213));
@@ -169,6 +181,24 @@ public class MainActivity extends AppCompatActivity {
         initData();
 
     }
+
+
+
+    public void caidan(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("");
+        int rand = (int)(+Math.random()*(randStrs.length-1+1));
+        builder.setMessage(randStrs[rand]);
+        builder.setNegativeButton("否",null);
+        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+//                Toast.makeText(MainActivity.this,"GG",0).show();
+            }
+        });
+        builder.show();
+    }
+
     private class ButtonListener implements View.OnClickListener {
             public void onClick(View v) {
                 String[] dates, times;
@@ -228,6 +258,7 @@ public class MainActivity extends AppCompatActivity {
                         mHandler.sendMessageDelayed(m, 1500);
                         break;
                     default:
+                        caidan();
                         break;
                 }
             }
@@ -853,4 +884,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
 }
