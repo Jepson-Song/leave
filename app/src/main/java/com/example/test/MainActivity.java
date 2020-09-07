@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 String[] dates, times;
                 switch(v.getId()){
                     case R.id.btStartDate:
-                        caidanCode = caidanCode + "2";
+                        caidanCode = caidanCode + "1";
                         Log.d(TAG, "caidanCode: "+caidanCode);
                         dates = btStartDate.getText().toString().trim().split("-");
                         new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
                         break;
                     case R.id.btStartTime:
-                        caidanCode = caidanCode + "3";
+                        caidanCode = caidanCode + "2";
                         Log.d(TAG, "caidanCode: "+caidanCode);
                         times = btStartTime.getText().toString().trim().split(":");
                         new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
                         }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
                         break;
                     case R.id.btEndDate:
-                        caidanCode = caidanCode + "4";
+                        caidanCode = caidanCode + "3";
                         Log.d(TAG, "caidanCode: "+caidanCode);
                         dates = btEndDate.getText().toString().trim().split("-");//|\s+
                         new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
                         }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
                         break;
                     case R.id.btEndTime:
-                        caidanCode = caidanCode + "5";
+                        caidanCode = caidanCode + "4";
                         Log.d(TAG, "caidanCode: "+caidanCode);
                         times = btEndTime.getText().toString().trim().split(":");
                         new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
                         }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
                         break;
                     case R.id.btApplicationDate:
-                        caidanCode = caidanCode + "6";
+                        caidanCode = caidanCode + "5";
                         Log.d(TAG, "caidanCode: "+caidanCode);
                         dates = btApplicationDate.getText().toString().trim().split("-");
                         new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                         }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
                         break;
                     case R.id.pb_btn:
-                        caidanCode = caidanCode + "7";
+                        caidanCode = caidanCode + "6";
                         Log.d(TAG, "caidanCode: "+caidanCode);
                         if (caidanCode.length()>=7){
                             Log.d(TAG, "7_caidan: "+caidanCode.substring(caidanCode.length()-7,caidanCode.length()));
@@ -269,14 +269,14 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "caidan: "+"触发彩蛋");
                             if (isOriginColor.equals("true")){
                                 Log.d(TAG, "caidan: "+"激活紫色主题");
-                                Toast.makeText(MainActivity.this, "激活紫色主题！" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, " 触发【紫色主题】彩蛋！" , Toast.LENGTH_SHORT).show();
                                 changeStatusBarColor(vipButtonColor);
                                 changeButtonColor(vipButtonColor);
                                 changeLayoutColor(vipLayoutColor);
                                 isOriginColor = "false";
                             }else{
                                 Log.d(TAG, "caidan: "+"返回蓝色主题");
-                                Toast.makeText(MainActivity.this, "返回蓝色主题！" , Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, " 触发【蓝色主题】彩蛋！" , Toast.LENGTH_SHORT).show();
                                 changeStatusBarColor(originButtonColor);
                                 changeButtonColor(originButtonColor);
                                 changeLayoutColor(originLayoutColor);
@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity {
                         mHandler.sendMessageDelayed(m, 1500);
                         break;
                     default:
-                        caidanCode = caidanCode + "1";
+                        caidanCode = caidanCode + "7";
                         //避免过长溢出
                         if (caidanCode.length()>=100){
                             caidanCode = caidanCode.substring(caidanCode.length()-7,caidanCode.length());
