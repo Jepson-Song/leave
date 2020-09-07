@@ -41,6 +41,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.sql.SQLTransactionRollbackException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -139,107 +140,99 @@ public class MainActivity extends AppCompatActivity {
 //        etAppicationDate = (EditText) findViewById(R.id.etApplicationDate);
 
 
+
+        btStartDate = (Button)findViewById(R.id.btStartDate);
+        btStartDate.setOnClickListener(new ButtonListener());
+
+        btStartTime = (Button)findViewById(R.id.btStartTime);
+        btStartTime.setOnClickListener(new ButtonListener());
+
+        btEndDate = (Button)findViewById(R.id.btEndDate);
+        btEndDate.setOnClickListener(new ButtonListener());
+
+        btEndTime = (Button)findViewById(R.id.btEndTime);
+        btEndTime.setOnClickListener(new ButtonListener());
+
+
+        btApplicationDate = (Button)findViewById(R.id.btApplicationDate);
+        btApplicationDate.setOnClickListener(new ButtonListener());
+
         pb_button = (ProgressButton) findViewById(R.id.pb_btn);
         pb_button.setBgColor(Color.rgb(38, 188, 213));
         pb_button.setTextColor(Color.WHITE);
         pb_button.setProColor(Color.WHITE);
         pb_button.setButtonText("生成");
-        pb_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pb_button.startAnim();
-                Message m = mHandler.obtainMessage();
-                mHandler.sendMessageDelayed(m, 1500);
-            }
-        });
-
-        btStartDate = (Button)findViewById(R.id.btStartDate);
-        btStartDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] dates = btStartDate.getText().toString().trim().split("-");//|\s+
-//              Log.d(TAG, "onClick btStartDate: "+btStartDate.getText().toString());
-                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int day) {
-                        month = month + 1;
-                        btStartDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                        btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                    }
-                }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-            }
-        });
-
-        btStartTime = (Button)findViewById(R.id.btStartTime);
-        btStartTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] times = btStartTime.getText().toString().trim().split(":");//|\s+
-                new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hour, int minute) {
-                        // TODO Auto-generated method stub
-//                        Toast.makeText(MainActivity.this, hourOfDay+":"+minute, 1).show();
-                        btStartTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
-                    }
-                }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
-            }
-        });
-
-        btEndDate = (Button)findViewById(R.id.btEndDate);
-        btEndDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] dates = btEndDate.getText().toString().trim().split("-");//|\s+
-//                Log.d(TAG, "onClick btEndDate: "+btEndDate.getText().toString());
-                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int day) {
-                        month = month + 1;
-                        btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                    }
-                }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-            }
-        });
-
-        btEndTime = (Button)findViewById(R.id.btEndTime);
-        btEndTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] times = btEndTime.getText().toString().trim().split(":");//|\s+
-                new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hour, int minute) {
-                        // TODO Auto-generated method stub
-//                        Toast.makeText(MainActivity.this, hourOfDay+":"+minute, 1).show();
-                        btEndTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
-                    }
-                }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
-            }
-        });
-
-
-
-        btApplicationDate = (Button)findViewById(R.id.btApplicationDate);
-        btApplicationDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String[] dates = btApplicationDate.getText().toString().trim().split("-");//|\s+
-                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int day) {
-                        month = month + 1;
-                        btApplicationDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                    }
-                }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-            }
-        });
+        pb_button.setOnClickListener(new ButtonListener());
 
 
         //初始化控件的值
         initData();
 
     }
+    private class ButtonListener implements View.OnClickListener {
+            public void onClick(View v) {
+                String[] dates, times;
+                switch(v.getId()){
+                    case R.id.btStartDate:
+                        dates = btStartDate.getText().toString().trim().split("-");
+                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                month = month + 1;
+                                btStartDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                            }
+                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+                        break;
+                    case R.id.btStartTime:
+                        times = btStartTime.getText().toString().trim().split(":");
+                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hour, int minute) {
+                                btStartTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
+                            }
+                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
+                        break;
+                    case R.id.btEndDate:
+                        dates = btEndDate.getText().toString().trim().split("-");//|\s+
+                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                month = month + 1;
+                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                            }
+                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+                        break;
+                    case R.id.btEndTime:
+                        times = btEndTime.getText().toString().trim().split(":");
+                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hour, int minute) {
+                                btEndTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
+                            }
+                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
+                        break;
+                    case R.id.btApplicationDate:
+                        dates = btApplicationDate.getText().toString().trim().split("-");
+                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                month = month + 1;
+                                btApplicationDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                            }
+                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+                        break;
+                    case R.id.pb_btn:
+                        pb_button.startAnim();
+                        Message m = mHandler.obtainMessage();
+                        mHandler.sendMessageDelayed(m, 1500);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
 
     /**
      * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容（每次create时触发）
