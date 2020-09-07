@@ -9,66 +9,6 @@
     tools:context=".MainActivity">
 
 
-    <TextView
-        android:id="@+id/tvApplicationDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开始时间："
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.779" />
-
-    <TextView
-        android:id="@+id/tvReason"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="请假事由："
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.46" />
-
-    <TextView
-        android:id="@+id/tvExplain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="事由说明："
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.581" />
-
-    <TextView
-        android:id="@+id/tvReviewer1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="审核1："
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.199"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.658" />
-
-    <TextView
-        android:id="@+id/tvReviewer2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="审核2："
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.199"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.713" />
-
     <EditText
         android:id="@+id/etSchool"
         android:layout_width="wrap_content"
@@ -97,65 +37,53 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.185" />
 
-    <EditText
-        android:id="@+id/etDestination"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
-        android:ems="10"
-        android:text="校医院"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
-        app:layout_constraintStart_toEndOf="@+id/tvName"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.523" />
-
     <Button
         android:id="@+id/btStartDate"
         android:layout_width="130dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/btEndDate"
+        android:layout_height="40dp"
+        android:background="#26bcd5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.092"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toEndOf="@+id/tvStartDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.33" />
 
     <Button
         android:id="@+id/btEndTime"
         android:layout_width="85dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
+        android:background="#26bcd5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toEndOf="@+id/btEndDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintVertical_bias="0.403" />
 
     <Button
         android:id="@+id/btEndDate"
         android:layout_width="130dp"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
+        android:background="#26bcd5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.093"
+        app:layout_constraintHorizontal_bias="0.12"
         app:layout_constraintStart_toEndOf="@+id/tvEndDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintVertical_bias="0.403" />
 
     <Button
         android:id="@+id/btStartTime"
         android:layout_width="85dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toTopOf="@+id/btEndTime"
+        android:layout_height="40dp"
+        android:background="#26bcd5"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toEndOf="@+id/btStartDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.33" />
 
     <TextView
         android:id="@+id/tvStartDate"
@@ -167,7 +95,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.332" />
+        app:layout_constraintVertical_bias="0.337" />
 
     <EditText
         android:id="@+id/etType"
@@ -195,7 +123,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.387" />
+        app:layout_constraintVertical_bias="0.405" />
 
     <EditText
         android:id="@+id/etReason"
@@ -211,23 +139,43 @@
         app:layout_constraintHorizontal_bias="0.621"
         app:layout_constraintStart_toEndOf="@+id/tvName"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.457" />
+        app:layout_constraintVertical_bias="0.478" />
 
-    <EditText
-        android:id="@+id/etExplain"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
-        android:layout_marginRight="13dp"
-        android:ems="10"
-        android:text="头疼"
-        android:textAlignment="center"
+    <Button
+        android:id="@+id/btApplicationDate"
+        android:layout_width="222dp"
+        android:layout_height="40dp"
+        android:background="#26bcd5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.608"
-        app:layout_constraintStart_toEndOf="@+id/tvName"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etReviewer2"
+        app:layout_constraintVertical_bias="0.102" />
+
+    <TextView
+        android:id="@+id/tvReason"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="请假事由："
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.591" />
+        app:layout_constraintVertical_bias="0.48" />
+
+    <TextView
+        android:id="@+id/tvApplicationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始时间："
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.811" />
 
     <EditText
         android:id="@+id/etReviewer2"
@@ -241,10 +189,22 @@
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.575"
+        app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toEndOf="@+id/tvReviewer2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.723" />
+        app:layout_constraintVertical_bias="0.743" />
+
+    <TextView
+        android:id="@+id/tvExplain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="事由说明："
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.175"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.601" />
 
     <EditText
         android:id="@+id/etReviewer1"
@@ -261,7 +221,47 @@
         app:layout_constraintHorizontal_bias="0.608"
         app:layout_constraintStart_toEndOf="@+id/tvName"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.657" />
+        app:layout_constraintVertical_bias="0.677" />
+
+    <TextView
+        android:id="@+id/tvReviewer1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="审核1："
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
+
+    <TextView
+        android:id="@+id/tvReviewer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="审核2："
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.196"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.733" />
+
+    <EditText
+        android:id="@+id/etDestination"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:ems="10"
+        android:text="校医院"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintStart_toEndOf="@+id/tvName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.543" />
 
     <TextView
         android:id="@+id/tvDestination"
@@ -269,22 +269,27 @@
         android:layout_height="wrap_content"
         android:text="前往目的地："
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.177"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.528" />
+        app:layout_constraintVertical_bias="0.547" />
 
-    <Button
-        android:id="@+id/btApplicationDate"
-        android:layout_width="211dp"
-        android:layout_height="53dp"
+    <EditText
+        android:id="@+id/etExplain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:ems="10"
+        android:text="头疼"
+        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.795"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etReviewer2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.608"
+        app:layout_constraintStart_toEndOf="@+id/tvName"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.612" />
 
     <TextView
         android:id="@+id/tvName"
@@ -298,7 +303,7 @@
         app:layout_constraintHorizontal_bias="0.167"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.127" />
 
     <EditText
         android:id="@+id/etName"
@@ -339,11 +344,10 @@
     <com.example.test.ui.ProgressButton
         android:id="@+id/pb_btn"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="44dp"
         android:clickable="true"
-        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="0dp" />
 
