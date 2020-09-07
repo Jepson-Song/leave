@@ -1,6 +1,7 @@
 package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -12,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -19,12 +21,16 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -49,6 +55,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.concurrent.BlockingDeque;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -97,8 +104,14 @@ public class MainActivity extends AppCompatActivity {
     private Button btStartDate, btStartTime, btEndDate, btEndTime, btApplicationDate;
     private Button btAuthor;
 
+    private String originButtonColor = "#26bcd5", originLayoutColor = "#e0ffff";//"#e6fafa";//"#f0ffff";
+    private String vipButtonColor = "#cc6699", vipLayoutColor = "#fcedf7";//"#fcf9fb";//"#fcedf7";//"#ffe0f5";//"#ffcccc";
+    private String isOriginColor = "true";
+
+    private String caidanCode = "";
+
     private String[] randStrs = new String[]{
-            "打破假闭环！",
+//            "打破假闭环！",
             "基础扎实、工作踏实、作风朴实、开拓创新。",
             "公为天下、报效祖国，\n诚实守信、襟怀坦荡，\n勇猛精进、敢为人先，\n毅然果决、坚韧不拔。",
             "西岳轩昂,北斗辉煌,泽被万方,化育先翔。巍哉学府,辈出栋梁,重德厚生,国乃盛强。千仞之墙,百炼之钢,镂木铄金,飞天巡洋。公诚勇毅,永矢毋忘,中华灿烂,工大无疆。"
@@ -170,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         btAuthor.setOnClickListener(new ButtonListener());
 
         pb_button = (ProgressButton) findViewById(R.id.pb_btn);
-        pb_button.setBgColor(Color.rgb(38, 188, 213));
+        pb_button.setBgColor(Color.parseColor("#26bcd5"));//(Color.rgb(38, 188, 213));//
         pb_button.setTextColor(Color.WHITE);
         pb_button.setProColor(Color.WHITE);
         pb_button.setButtonText("生成");
@@ -182,7 +195,112 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private class ButtonListener implements View.OnClickListener {
+            public void onClick(View v) {
+                String[] dates, times;
+                switch(v.getId()){
+                    case R.id.btStartDate:
+                        caidanCode = caidanCode + "2";
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        dates = btStartDate.getText().toString().trim().split("-");
+                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                month = month + 1;
+                                btStartDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                            }
+                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+                        break;
+                    case R.id.btStartTime:
+                        caidanCode = caidanCode + "3";
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        times = btStartTime.getText().toString().trim().split(":");
+                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hour, int minute) {
+                                btStartTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
+                            }
+                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
+                        break;
+                    case R.id.btEndDate:
+                        caidanCode = caidanCode + "4";
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        dates = btEndDate.getText().toString().trim().split("-");//|\s+
+                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                month = month + 1;
+                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                            }
+                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+                        break;
+                    case R.id.btEndTime:
+                        caidanCode = caidanCode + "5";
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        times = btEndTime.getText().toString().trim().split(":");
+                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker view, int hour, int minute) {
+                                btEndTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
+                            }
+                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
+                        break;
+                    case R.id.btApplicationDate:
+                        caidanCode = caidanCode + "6";
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        dates = btApplicationDate.getText().toString().trim().split("-");
+                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int day) {
+                                month = month + 1;
+                                btApplicationDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                            }
+                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+                        break;
+                    case R.id.pb_btn:
+                        caidanCode = caidanCode + "7";
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        if (caidanCode.length()>=7){
+                            Log.d(TAG, "7_caidan: "+caidanCode.substring(caidanCode.length()-7,caidanCode.length()));
+                            Log.d(TAG, "caidan: isOriginColor: "+isOriginColor);
+                        }
+                        if ((caidanCode.length()>=7&&caidanCode.substring(caidanCode.length()-7,caidanCode.length()).equals("1234567"))||strName.equals("宋金鹏")){
+                            Log.d(TAG, "caidan: "+"触发彩蛋");
+                            if (isOriginColor.equals("true")){
+                                Log.d(TAG, "caidan: "+"激活紫色主题");
+                                Toast.makeText(MainActivity.this, "激活紫色主题！" , Toast.LENGTH_SHORT).show();
+                                changeStatusBarColor(vipButtonColor);
+                                changeButtonColor(vipButtonColor);
+                                changeLayoutColor(vipLayoutColor);
+                                isOriginColor = "false";
+                            }else{
+                                Log.d(TAG, "caidan: "+"返回蓝色主题");
+                                Toast.makeText(MainActivity.this, "返回蓝色主题！" , Toast.LENGTH_SHORT).show();
+                                changeStatusBarColor(originButtonColor);
+                                changeButtonColor(originButtonColor);
+                                changeLayoutColor(originLayoutColor);
+                                isOriginColor = "true";
+                            }
+                        }
 
+                        pb_button.startAnim();
+                        Message m = mHandler.obtainMessage();
+                        mHandler.sendMessageDelayed(m, 1500);
+                        break;
+                    default:
+                        caidanCode = caidanCode + "1";
+                        //避免过长溢出
+                        if (caidanCode.length()>=100){
+                            caidanCode = caidanCode.substring(caidanCode.length()-7,caidanCode.length());
+                        }
+                        Log.d(TAG, "caidanCode: "+caidanCode);
+                        caidan();
+                        break;
+                }
+            }
+
+        }
 
     public void caidan(){
         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
@@ -199,71 +317,41 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private class ButtonListener implements View.OnClickListener {
-            public void onClick(View v) {
-                String[] dates, times;
-                switch(v.getId()){
-                    case R.id.btStartDate:
-                        dates = btStartDate.getText().toString().trim().split("-");
-                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month = month + 1;
-                                btStartDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                            }
-                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-                        break;
-                    case R.id.btStartTime:
-                        times = btStartTime.getText().toString().trim().split(":");
-                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hour, int minute) {
-                                btStartTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
-                            }
-                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
-                        break;
-                    case R.id.btEndDate:
-                        dates = btEndDate.getText().toString().trim().split("-");//|\s+
-                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month = month + 1;
-                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                            }
-                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-                        break;
-                    case R.id.btEndTime:
-                        times = btEndTime.getText().toString().trim().split(":");
-                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hour, int minute) {
-                                btEndTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
-                            }
-                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
-                        break;
-                    case R.id.btApplicationDate:
-                        dates = btApplicationDate.getText().toString().trim().split("-");
-                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month = month + 1;
-                                btApplicationDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                            }
-                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-                        break;
-                    case R.id.pb_btn:
-                        pb_button.startAnim();
-                        Message m = mHandler.obtainMessage();
-                        mHandler.sendMessageDelayed(m, 1500);
-                        break;
-                    default:
-                        caidan();
-                        break;
-                }
-            }
-
+    private void changeStatusBarColor(String color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(color));   //这里动态修改颜色
         }
+
+    }
+
+    private void changeButtonColor(String color){
+
+        btStartDate .setBackgroundColor(Color.parseColor(color));
+
+        btStartTime.setBackgroundColor(Color.parseColor(color));
+
+        btEndDate.setBackgroundColor(Color.parseColor(color));
+
+        btEndTime.setBackgroundColor(Color.parseColor(color));
+
+        btApplicationDate.setBackgroundColor(Color.parseColor(color));
+
+//        btAuthor.setBackgroundColor(Color.parseColor(color));
+
+        pb_button.setBgColor(Color.parseColor(color));//(Color.rgb(38, 188, 213));//
+    }
+
+    private void changeLayoutColor(String color){
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.activity_main);
+        layout.setBackgroundColor(Color.parseColor(color));
+    }
 
     /**
      * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容（每次create时触发）
@@ -294,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
         //strRev2Time = sp.getString("strRev2Time", strReviewer2);
         //strApplicationCost = sp.getString("strApplicationCost", "null");
         strApplicationDate = sp.getString("strApplicationDate", "2020-06-25");
+        isOriginColor = sp.getString("isOriginColor", "true");
 
         // 解决和旧版本冲突导致的闪退问题，因为新版本strApplicationDate格式发生了变化
         if (strApplicationDate.length()==4){
@@ -316,6 +405,16 @@ public class MainActivity extends AppCompatActivity {
         etReviewer1.setText(strReviewer1);
         etReviewer2.setText(strReviewer2);
         btApplicationDate.setText(strApplicationDate);
+        
+        if (isOriginColor.equals("true")){
+            changeButtonColor(originButtonColor);
+            changeStatusBarColor(originButtonColor);
+            changeLayoutColor(originLayoutColor);
+        }else{
+            changeButtonColor(vipButtonColor);
+            changeStatusBarColor(vipButtonColor);
+            changeLayoutColor(vipLayoutColor);
+        }
     }
 
     /**
@@ -353,6 +452,8 @@ public class MainActivity extends AppCompatActivity {
         //editor.putString("strRev2Time", strRev2Time);
         //editor.putString("strApplicationCost", strApplicationCost);
         editor.putString("strApplicationDate", strApplicationDate);
+        editor.putString("isOriginColor", isOriginColor);
+
 
         //提交数据存入到xml文件中
         editor.commit();

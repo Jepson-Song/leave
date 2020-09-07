@@ -3,10 +3,16 @@ package com.example.test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,6 +28,12 @@ public class WebActivity extends AppCompatActivity {
     private Context context;
     private String newPath, newWebPath;
 
+    private SharedPreferences sp;
+
+    private String originButtonColor = "#26bcd5";
+    private String vipButtonColor = "#cc6699";
+    private String isOriginColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +45,29 @@ public class WebActivity extends AppCompatActivity {
         newWebPath = newPath + File.separator + leaveName;
         Log.d(TAG, "onCreate: newWebPath="+newWebPath);
 
+        sp = getSharedPreferences("User", Context.MODE_PRIVATE);
+        isOriginColor = sp.getString("isOriginColor", "true");
+        if (isOriginColor.equals("true")){
+            changeStatusBarColor(originButtonColor);
+        }else{
+            changeStatusBarColor(vipButtonColor);
+        }
+
         openWeb();
+    }
+
+    private void changeStatusBarColor(String color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                    | WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.parseColor(color));   //这里动态修改颜色
+        }
+
     }
 
     @Override

@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     android:background="#f0ffff"
     android:layout_gravity="center_horizontal"
+    android:clipToPadding="true"
+    android:fitsSystemWindows="true"
+    android:id="@+id/activity_main"
     tools:context=".MainActivity">
 
 
@@ -246,7 +249,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.678" />
+        app:layout_constraintVertical_bias="0.664" />
 
     <TextView
         android:id="@+id/tvReviewer2"
@@ -282,11 +285,11 @@
         android:layout_height="wrap_content"
         android:text="前往目的地："
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.177"
+        app:layout_constraintHorizontal_bias="0.162"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547" />
+        app:layout_constraintVertical_bias="0.54" />
 
     <EditText
         android:id="@+id/etExplain"
