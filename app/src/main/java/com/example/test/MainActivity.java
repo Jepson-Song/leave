@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -55,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
     //private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
     private EditText etName, etSchool, etType,  etReason, etDestination, etExplain, etReviewer1, etReviewer2;//etDate,etAppicationDate;
     private String strName, strSchool, strType, strStartDate, strEndDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
-
-
+    private String strStartTime, strEndTime;
     private String strName2, strReviewer12, strReviewer22;
 
     private String leaveName = "请假.html";
@@ -90,12 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressButton pb_button; //动画按钮
 
-
-
-    //日期对话框
-    private Button btStartDate, btEndDate, btApplicationDate;
-
-//    private int tmpYear, tmpMonth, tmpDay;
+    private Button btStartDate, btStartTime, btEndDate, btEndTime, btApplicationDate;
 
 
     @Override
@@ -163,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String[] dates = btStartDate.getText().toString().trim().split("-");//|\s+
-//                Log.d(TAG, "onClick btStartDate: "+btStartDate.getText().toString());
+//              Log.d(TAG, "onClick btStartDate: "+btStartDate.getText().toString());
                 new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -172,6 +167,22 @@ public class MainActivity extends AppCompatActivity {
                         btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
                     }
                 }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+            }
+        });
+
+        btStartTime = (Button)findViewById(R.id.btStartTime);
+        btStartTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] times = btStartTime.getText().toString().trim().split(":");//|\s+
+                new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hour, int minute) {
+                        // TODO Auto-generated method stub
+//                        Toast.makeText(MainActivity.this, hourOfDay+":"+minute, 1).show();
+                        btStartTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
+                    }
+                }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
             }
         });
 
@@ -188,6 +199,22 @@ public class MainActivity extends AppCompatActivity {
                         btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
                     }
                 }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+            }
+        });
+
+        btEndTime = (Button)findViewById(R.id.btEndTime);
+        btEndTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] times = btEndTime.getText().toString().trim().split(":");//|\s+
+                new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hour, int minute) {
+                        // TODO Auto-generated method stub
+//                        Toast.makeText(MainActivity.this, hourOfDay+":"+minute, 1).show();
+                        btEndTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
+                    }
+                }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
             }
         });
 
@@ -226,7 +253,9 @@ public class MainActivity extends AppCompatActivity {
         strType = sp.getString("strType", "私事");
         //strDuration = sp.getString("strDuration", "null");
         strStartDate = sp.getString("strStartDate", "2020-06-26");
+        strStartTime = sp.getString("strStartTime", "07:00");
         strEndDate = sp.getString("strEndDate", "2020-06-26");
+        strEndTime = sp.getString("strEndTime", "19:00");
         //strStart = sp.getString("strStart", "null");
         //strEnd = sp.getString("strEnd", "null");
         strReason = sp.getString("strReason", "病假");
@@ -246,7 +275,9 @@ public class MainActivity extends AppCompatActivity {
         etSchool.setText(strSchool);
         etType.setText(strType);
         btStartDate.setText(strStartDate);
+        btStartTime.setText(strStartTime);
         btEndDate.setText(strEndDate);
+        btEndTime.setText(strEndTime);
         etReason.setText(strReason);
         etDestination.setText(strDestination);
         etExplain.setText(strExplain);
@@ -274,7 +305,9 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("strType", strType);
         //editor.putString("strDuration", strDuration);
         editor.putString("strStartDate", strStartDate);
+        editor.putString("strStartTime", strStartTime);
         editor.putString("strEndDate", strEndDate);
+        editor.putString("strEndTime", strEndTime);
         //editor.putString("strStart", strStart);
         //editor.putString("strEnd", strEnd);
         editor.putString("strReason", strReason);
@@ -305,7 +338,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "read: strType=" + strType);
         strStartDate = btStartDate.getText().toString().trim();
         Log.d(TAG, "read: strStartDate=" + strStartDate);
+        strStartTime = btStartTime.getText().toString().trim();
         strEndDate = btEndDate.getText().toString().trim();
+        strEndTime = btEndTime.getText().toString().trim();
         strReason = etReason.getText().toString().trim();
         strDestination = etDestination.getText().toString().trim();
         strExplain = etExplain.getText().toString().trim();
@@ -325,6 +360,14 @@ public class MainActivity extends AppCompatActivity {
         strStartMont = String.format("%02d", intStartMonth);
         strStartDay = String.format("%02d", intStartDay);
 
+        int intStartHour, intStartMinute;
+        String strStartHour, strStartMinute;
+
+        String[] times = strStartTime.split(":");
+        intStartHour = Integer.parseInt(times[0]);
+        intStartMinute = Integer.parseInt(times[1]);
+        strStartHour = String.format("%02d", intStartHour);
+        strStartMinute = String.format("%02d", intStartMinute);
 
         int intEndYear, intEndMonth, intEndDay;
         String strEndYear, strEndMont, strEndDay;
@@ -337,6 +380,16 @@ public class MainActivity extends AppCompatActivity {
         strEndYear = String.format("%04d", intEndYear);
         strEndMont = String.format("%02d", intEndMonth);
         strEndDay = String.format("%02d", intEndDay);
+
+        int intEndHour, intEndMinute;
+        String strEndHour, strEndMinute;
+
+        times = strEndTime.split(":");
+        intEndHour = Integer.parseInt(times[0]);
+        intEndMinute = Integer.parseInt(times[1]);
+        strEndHour = String.format("%02d", intEndHour);
+        strEndMinute = String.format("%02d", intEndMinute);
+
 
         int intApplicationYear, intApplicationMonth, intApplicationDay;
         String strApplicationYear, strApplicationMonth, strApplicationDay;
@@ -354,9 +407,9 @@ public class MainActivity extends AppCompatActivity {
         strRev1Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev1Hour;
         strRev2Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev2Hour;
 
-        strStart = strStartYear + "-" + strStartMont + "-" + strStartDay + " 07时";
-        strEnd = strEndYear + "-" + strEndMont + "-" + strEndDay + " 19时";
-        int intDuration = (intEndDay-intStartDay)*24+12;
+        strStart = strStartYear + "-" + strStartMont + "-" + strStartDay + " " + strStartHour + "时";
+        strEnd = strEndYear + "-" + strEndMont + "-" + strEndDay + " " + strEndHour + "时";
+        int intDuration = (intEndDay-intStartDay)*24+(intEndHour-intStartHour);
         strDuration = intDuration+"小时";
 
         strName2 = getName2(strName);
