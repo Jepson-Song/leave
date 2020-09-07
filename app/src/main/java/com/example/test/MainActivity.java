@@ -264,6 +264,14 @@ public class MainActivity extends AppCompatActivity {
         //strApplicationCost = sp.getString("strApplicationCost", "null");
         strApplicationDate = sp.getString("strApplicationDate", "2020-06-25");
 
+        // 解决和旧版本冲突导致的闪退问题，因为新版本strApplicationDate格式发生了变化
+        if (strApplicationDate.length()==4){
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("strApplicationDate", "2020-06-25");
+            editor.commit();
+            strApplicationDate = "2020-06-25";
+        }
+
         etName.setText(strName);
         etSchool.setText(strSchool);
         etType.setText(strType);
