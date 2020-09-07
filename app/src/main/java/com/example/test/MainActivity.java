@@ -54,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
     //private Button btCreate;
     //private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
     private EditText etName, etSchool, etType,  etReason, etDestination, etExplain, etReviewer1, etReviewer2;//etDate,etAppicationDate;
-    private String strName, strSchool, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
-    private int intDate, intYear, intMonth, intDay;
-    private String strMonth, strDay, strName2, strReviewer12, strReviewer22;
+    private String strName, strSchool, strType, strStartDate, strEndDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
+
+
+    private String strName2, strReviewer12, strReviewer22;
 
     private String leaveName = "请假.html";
     private String leaveDirName = "请假_files";
@@ -66,11 +67,10 @@ public class MainActivity extends AppCompatActivity {
     private String cancelDirName = "销假_files";
     private String imgDirName = "images";
     private String strDuration = "12小时";
-    private String strStart = "2020-06-28 07时";
-    private String strEnd = "2020-06-28 19时";
+    private String strStart = "2020-06-26 07时";
+    private String strEnd = "2020-06-26 19时";
     private String strApplicationTime = "06-25 12:14";
-    private String strApplicationDate, strApplicationMonth, strApplicationDay;
-    private int intApplicationDate, intApplicationYear, intApplicationMonth, intApplicationDay;
+    private String strApplicationDate;
     private String strRev1Pass = "四五六审核（已通过）";
     private String strRev1Time = "06-25 13:25";
     private String strRev2Pass = "七八九审核（已通过）";
@@ -90,22 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
     ProgressButton pb_button; //动画按钮
 
-    private DatePicker datapicker;
-    private Calendar cal;//显示当前日期
-    private int year;
-    private int month;
-    private int day;
-    private int hour;
-    private int minute;
-
 
 
     //日期对话框
-    private DatePickerDialog datePickerDialog ;
-    private EditText editText ;
-    private Button btDate, btApplicationDate;
+    private Button btStartDate, btEndDate, btApplicationDate;
 
-    private int tmpYear, tmpMonth, tmpDay;
+//    private int tmpYear, tmpMonth, tmpDay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,53 +158,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //初始化日历
-        Calendar calendar = Calendar.getInstance();
-        year = calendar.get(Calendar.YEAR);
-        month = calendar.get(Calendar.MONTH);
-        day = calendar.get(Calendar.DAY_OF_MONTH);
-        hour = calendar.get(Calendar.HOUR_OF_DAY);
-        minute = calendar.get(Calendar.MINUTE);
-
-        btDate = (Button)findViewById(R.id.btDate);
-        btDate.setOnClickListener(new View.OnClickListener() {
+        btStartDate = (Button)findViewById(R.id.btStartDate);
+        btStartDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] dates = btStartDate.getText().toString().trim().split("-");//|\s+
+//                Log.d(TAG, "onClick btStartDate: "+btStartDate.getText().toString());
                 new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         month = month + 1;
-                        // TODO Auto-generated method stub
-//                        intYear = year;
-//                        intMonth = month;
-//                        intDay = day;
-//                        String text = year + "-" + (month + 1) + "-" + day;
-//                        btDate.setText(year + "-" + (month + 1) + "-" + day);
-//                        strDate = String.format("%02d", month)+String.format("%02d", day);
-                        btDate.setText(String.format("%02d", month)+String.format("%02d", day));
+                        btStartDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                        btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
                     }
-                }, year, month, day).show();
+                }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
             }
         });
+
+        btEndDate = (Button)findViewById(R.id.btEndDate);
+        btEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] dates = btEndDate.getText().toString().trim().split("-");//|\s+
+//                Log.d(TAG, "onClick btEndDate: "+btEndDate.getText().toString());
+                new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int day) {
+                        month = month + 1;
+                        btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
+                    }
+                }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
+            }
+        });
+
+
 
         btApplicationDate = (Button)findViewById(R.id.btApplicationDate);
         btApplicationDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String[] dates = btApplicationDate.getText().toString().trim().split("-");//|\s+
                 new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         month = month + 1;
-                        // TODO Auto-generated method stub
-//                        intApplicationYear = year;
-//                        intApplicationMonth = month;
-//                        intApplicationDay = day;
-//                        String text = year + "-" + (month + 1) + "-" + day;
-//                        btApplicationDate.setText(year + "-" + (month + 1) + "-" + day);
-//                        strApplicationDate = String.format("%02d", month)+String.format("%02d", day);
-                        btApplicationDate.setText(String.format("%02d", month)+String.format("%02d", day));
+                        btApplicationDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
                     }
-                }, year, month, day).show();
+                }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
             }
         });
 
@@ -224,17 +215,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容
+     * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容（每次create时触发）
      */
     private void initData(){
         sp = getSharedPreferences("User", Context.MODE_PRIVATE);
-        //private String strName, strType, strDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
+        //private String strName, strType, strStartDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
         //strName2 = sp.getString("strName2", "null");
         strName = sp.getString("strName", "某某某");
         strSchool = sp.getString("strSchool", "某某学院");
         strType = sp.getString("strType", "私事");
         //strDuration = sp.getString("strDuration", "null");
-        strDate = sp.getString("strDate", "0626");
+        strStartDate = sp.getString("strStartDate", "2020-06-26");
+        strEndDate = sp.getString("strEndDate", "2020-06-26");
         //strStart = sp.getString("strStart", "null");
         //strEnd = sp.getString("strEnd", "null");
         strReason = sp.getString("strReason", "病假");
@@ -248,12 +240,13 @@ public class MainActivity extends AppCompatActivity {
         strReviewer2 = sp.getString("strReviewer2", "某某某");
         //strRev2Time = sp.getString("strRev2Time", strReviewer2);
         //strApplicationCost = sp.getString("strApplicationCost", "null");
-        strApplicationDate = sp.getString("strApplicationDate", "0625");
+        strApplicationDate = sp.getString("strApplicationDate", "2020-06-25");
 
         etName.setText(strName);
         etSchool.setText(strSchool);
         etType.setText(strType);
-        btDate.setText(strDate);
+        btStartDate.setText(strStartDate);
+        btEndDate.setText(strEndDate);
         etReason.setText(strReason);
         etDestination.setText(strDestination);
         etExplain.setText(strExplain);
@@ -263,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 将用户的输入的数据保存下来，以便用户下次打开APP时将数据再显示出来
+     * 将用户的输入的数据保存下来，以便用户下次打开APP时将数据再显示出来（每次click button结束时触发）
      */
     private void saveData(){
         /**
@@ -280,7 +273,8 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("strSchool", strSchool);
         editor.putString("strType", strType);
         //editor.putString("strDuration", strDuration);
-        editor.putString("strDate", strDate);
+        editor.putString("strStartDate", strStartDate);
+        editor.putString("strEndDate", strEndDate);
         //editor.putString("strStart", strStart);
         //editor.putString("strEnd", strEnd);
         editor.putString("strReason", strReason);
@@ -300,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 从页面控件读取数据
+     * 从页面控件读取数据（每次click button一开始时触发）
      */
     private void getData() {
         strName = etName.getText().toString().trim();
@@ -309,8 +303,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "read: strSchool=" + strSchool);
         strType = etType.getText().toString().trim();
         Log.d(TAG, "read: strType=" + strType);
-        strDate = btDate.getText().toString().trim();
-        Log.d(TAG, "read: strDate=" + strDate);
+        strStartDate = btStartDate.getText().toString().trim();
+        Log.d(TAG, "read: strStartDate=" + strStartDate);
+        strEndDate = btEndDate.getText().toString().trim();
         strReason = etReason.getText().toString().trim();
         strDestination = etDestination.getText().toString().trim();
         strExplain = etExplain.getText().toString().trim();
@@ -318,17 +313,40 @@ public class MainActivity extends AppCompatActivity {
         strReviewer2 = etReviewer2.getText().toString().trim();
         strApplicationDate = btApplicationDate.getText().toString().trim();
 
-        intDate = Integer.parseInt(strDate);
-        intMonth = intDate / 100;
-        intDay = intDate % 100;
+        int intStartYear, intStartMonth, intStartDay;
+        String strStartYear, strStartMont, strStartDay;
 
-        strMonth = String.format("%02d", intMonth);
-        strDay = String.format("%02d", intDay);
+        String[] dates = strStartDate.split("-");
+        intStartYear = Integer.parseInt(dates[0]);
+        intStartMonth = Integer.parseInt(dates[1]);
+        intStartDay = Integer.parseInt(dates[2]);
 
-        intApplicationDate = Integer.parseInt(strApplicationDate);
-        intApplicationMonth = intApplicationDate / 100;
-        intApplicationDay = intApplicationDate % 100;
+        strStartYear = String.format("%04d", intStartYear);
+        strStartMont = String.format("%02d", intStartMonth);
+        strStartDay = String.format("%02d", intStartDay);
 
+
+        int intEndYear, intEndMonth, intEndDay;
+        String strEndYear, strEndMont, strEndDay;
+
+        dates = strEndDate.split("-");
+        intEndYear = Integer.parseInt(dates[0]);
+        intEndMonth = Integer.parseInt(dates[1]);
+        intEndDay = Integer.parseInt(dates[2]);
+
+        strEndYear = String.format("%04d", intEndYear);
+        strEndMont = String.format("%02d", intEndMonth);
+        strEndDay = String.format("%02d", intEndDay);
+
+        int intApplicationYear, intApplicationMonth, intApplicationDay;
+        String strApplicationYear, strApplicationMonth, strApplicationDay;
+
+        dates = strApplicationDate.split("-");
+        intApplicationYear = Integer.parseInt(dates[0]);
+        intApplicationMonth = Integer.parseInt(dates[1]);
+        intApplicationDay = Integer.parseInt(dates[2]);
+
+        strApplicationYear = String.format("%04d", intApplicationYear);
         strApplicationMonth = String.format("%02d", intApplicationMonth);
         strApplicationDay = String.format("%02d", intApplicationDay);
 
@@ -336,9 +354,10 @@ public class MainActivity extends AppCompatActivity {
         strRev1Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev1Hour;
         strRev2Time = strApplicationMonth + "-" + strApplicationDay + " " + strRev2Hour;
 
-        strDuration = "12小时";
-        strStart = "2020-"+strMonth+"-"+strDay+" 07时";
-        strEnd = "2020-"+strMonth+"-"+strDay+" 19时";
+        strStart = strStartYear + "-" + strStartMont + "-" + strStartDay + " 07时";
+        strEnd = strEndYear + "-" + strEndMont + "-" + strEndDay + " 19时";
+        int intDuration = (intEndDay-intStartDay)*24+12;
+        strDuration = intDuration+"小时";
 
         strName2 = getName2(strName);
         strReviewer12 = getName2(strReviewer1);
@@ -772,7 +791,6 @@ public class MainActivity extends AppCompatActivity {
             pb_button.stopAnim(new ProgressButton.OnStopAnim() {
                 @Override
                 public void Stop() {
-
                     Intent i=new Intent();
                     i.setClass(MainActivity.this,WebActivity.class);
                     startActivity(i);
