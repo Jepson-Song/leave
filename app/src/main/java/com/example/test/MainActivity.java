@@ -18,52 +18,30 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.test.ui.ProgressButton;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.sql.SQLTransactionRollbackException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.Locale;
-import java.util.concurrent.BlockingDeque;
-
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    //private static final int COPY_FALSE = -1;
-    //private static Handler handler;
-    
-    //private Button btCreate;
+
     //private TextView tvName, tvSchool, tvType, tvDate, tvReason, tvDestination, tvExplain, tvReviewer1, tvReviewer2;
     private EditText etName, etSchool, etType,  etReason, etDestination, etExplain, etReviewer1, etReviewer2;//etDate,etAppicationDate;
     private String strName, strSchool, strType, strStartDate, strEndDate, strReason, strDestination, strExplain, strReviewer1, strReviewer2;
@@ -99,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     //用SharedPreferences存储用户输入的数据
     private SharedPreferences sp;
 
-    ProgressButton pb_button; //动画按钮
+    private ProgressButton pb_button; //动画按钮
 
     private Button btStartDate, btStartTime, btEndDate, btEndTime, btApplicationDate;
     private Button btAuthor;
@@ -110,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String caidanCode = "";
 
+    // 右下角彩蛋弹出框内容
     private String[] randStrs = new String[]{
 //            "打破假闭环！",
             "基础扎实、工作踏实、作风朴实、开拓创新。",
@@ -128,18 +107,12 @@ public class MainActivity extends AppCompatActivity {
         newPath = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath();
         Log.d(TAG, "onCreate: newPath=" + newPath);
 
-        //newLeavePath = newPath + File.separator + leaveName;
-        //Log.d(TAG, "onCreate: newLeavePath="+newLeavePath);
         //leave文件夹在sd卡内的新位置
         newLeaveDirPath = newPath + File.separator + leaveDirName;
         Log.d(TAG, "onCreate: newLeaveDirPath=" + newLeaveDirPath);
-        //newDelayPath = newPath + File.separator + delayName;
-        //Log.d(TAG, "onCreate: newDelayPath="+newDelayPath);
         //delay文件夹在sd卡内的新位置
         newDelayDirPath = newPath + File.separator + delayDirName;
         Log.d(TAG, "onCreate: newDelayDirPath=" + newDelayDirPath);
-        //newCancelPath = newPath + File.separator + cancelName;
-        //Log.d(TAG, "onCreate: newCancelPath="+newCancelPath);
         //cancel文件夹在sd卡内的新位置
         newCancelDirPath = newPath + File.separator + cancelDirName;
         Log.d(TAG, "onCreate: newCancelDirPath=" + newCancelDirPath);
@@ -161,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
         etReviewer1 = (EditText) findViewById(R.id.etReviewer1);
         etReviewer2 = (EditText) findViewById(R.id.etReviewer2);
 //        etAppicationDate = (EditText) findViewById(R.id.etApplicationDate);
-
-
 
         btStartDate = (Button)findViewById(R.id.btStartDate);
         btStartDate.setOnClickListener(new ButtonListener());
@@ -189,119 +160,124 @@ public class MainActivity extends AppCompatActivity {
         pb_button.setButtonText("生成");
         pb_button.setOnClickListener(new ButtonListener());
 
-
         //初始化控件的值
         initData();
 
     }
 
+    /**
+     * 所有按钮的监听
+     */
     private class ButtonListener implements View.OnClickListener {
-            public void onClick(View v) {
-                String[] dates, times;
-                switch(v.getId()){
-                    case R.id.btStartDate:
-                        caidanCode = caidanCode + "1";
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        dates = btStartDate.getText().toString().trim().split("-");
-                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month = month + 1;
-                                btStartDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                            }
-                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-                        break;
-                    case R.id.btStartTime:
-                        caidanCode = caidanCode + "2";
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        times = btStartTime.getText().toString().trim().split(":");
-                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hour, int minute) {
-                                btStartTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
-                            }
-                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
-                        break;
-                    case R.id.btEndDate:
-                        caidanCode = caidanCode + "3";
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        dates = btEndDate.getText().toString().trim().split("-");//|\s+
-                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month = month + 1;
-                                btEndDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                            }
-                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-                        break;
-                    case R.id.btEndTime:
-                        caidanCode = caidanCode + "4";
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        times = btEndTime.getText().toString().trim().split(":");
-                        new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hour, int minute) {
-                                btEndTime.setText(String.format("%02d", hour)+":"+String.format("%02d", minute));
-                            }
-                        }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
-                        break;
-                    case R.id.btApplicationDate:
-                        caidanCode = caidanCode + "5";
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        dates = btApplicationDate.getText().toString().trim().split("-");
-                        new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int month, int day) {
-                                month = month + 1;
-                                btApplicationDate.setText(String.format("%04d", year)+"-"+String.format("%02d", month)+"-"+String.format("%02d", day));
-                            }
-                        }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1])-1, Integer.parseInt(dates[2])).show();
-                        break;
-                    case R.id.pb_btn:
-                        caidanCode = caidanCode + "6";
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        if (caidanCode.length()>=7){
-                            Log.d(TAG, "7_caidan: "+caidanCode.substring(caidanCode.length()-7,caidanCode.length()));
-                            Log.d(TAG, "caidan: isOriginColor: "+isOriginColor);
+        public void onClick(View v) {
+            String[] dates, times;
+            switch (v.getId()) {
+                case R.id.btStartDate:
+                    caidanCode = caidanCode + "1";
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    dates = btStartDate.getText().toString().trim().split("-");
+                    new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                            month = month + 1;
+                            btStartDate.setText(String.format("%04d", year) + "-" + String.format("%02d", month) + "-" + String.format("%02d", day));
+                            btEndDate.setText(String.format("%04d", year) + "-" + String.format("%02d", month) + "-" + String.format("%02d", day));
                         }
-                        if ((caidanCode.length()>=7&&caidanCode.substring(caidanCode.length()-7,caidanCode.length()).equals("1234567"))||strName.equals("宋金鹏")){
-                            Log.d(TAG, "caidan: "+"触发彩蛋");
-                            if (isOriginColor.equals("true")){
-                                Log.d(TAG, "caidan: "+"激活紫色主题");
-                                Toast.makeText(MainActivity.this, " 触发【紫色主题】彩蛋！" , Toast.LENGTH_SHORT).show();
-                                changeStatusBarColor(vipButtonColor);
-                                changeButtonColor(vipButtonColor);
-                                changeLayoutColor(vipLayoutColor);
-                                isOriginColor = "false";
-                            }else{
-                                Log.d(TAG, "caidan: "+"返回蓝色主题");
-                                Toast.makeText(MainActivity.this, " 触发【蓝色主题】彩蛋！" , Toast.LENGTH_SHORT).show();
-                                changeStatusBarColor(originButtonColor);
-                                changeButtonColor(originButtonColor);
-                                changeLayoutColor(originLayoutColor);
-                                isOriginColor = "true";
-                            }
+                    }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1]) - 1, Integer.parseInt(dates[2])).show();
+                    break;
+                case R.id.btStartTime:
+                    caidanCode = caidanCode + "2";
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    times = btStartTime.getText().toString().trim().split(":");
+                    new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hour, int minute) {
+                            btStartTime.setText(String.format("%02d", hour) + ":" + String.format("%02d", minute));
                         }
+                    }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
+                    break;
+                case R.id.btEndDate:
+                    caidanCode = caidanCode + "3";
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    dates = btEndDate.getText().toString().trim().split("-");//|\s+
+                    new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                            month = month + 1;
+                            btEndDate.setText(String.format("%04d", year) + "-" + String.format("%02d", month) + "-" + String.format("%02d", day));
+                        }
+                    }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1]) - 1, Integer.parseInt(dates[2])).show();
+                    break;
+                case R.id.btEndTime:
+                    caidanCode = caidanCode + "4";
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    times = btEndTime.getText().toString().trim().split(":");
+                    new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hour, int minute) {
+                            btEndTime.setText(String.format("%02d", hour) + ":" + String.format("%02d", minute));
+                        }
+                    }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
+                    break;
+                case R.id.btApplicationDate:
+                    caidanCode = caidanCode + "5";
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    dates = btApplicationDate.getText().toString().trim().split("-");
+                    new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                            month = month + 1;
+                            btApplicationDate.setText(String.format("%04d", year) + "-" + String.format("%02d", month) + "-" + String.format("%02d", day));
+                        }
+                    }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1]) - 1, Integer.parseInt(dates[2])).show();
+                    break;
+                case R.id.pb_btn:
+                    caidanCode = caidanCode + "6";
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    if (caidanCode.length() >= 7) {
+                        Log.d(TAG, "7_caidan: " + caidanCode.substring(caidanCode.length() - 7, caidanCode.length()));
+                        Log.d(TAG, "caidan: isOriginColor: " + isOriginColor);
+                    }
+                    if ((caidanCode.length() >= 7 && caidanCode.substring(caidanCode.length() - 7, caidanCode.length()).equals("1234567")) || strName.equals("宋金鹏")) {
+                        Log.d(TAG, "caidan: " + "触发彩蛋");
+                        if (isOriginColor.equals("true")) {
+                            Log.d(TAG, "caidan: " + "激活紫色主题");
+                            Toast.makeText(MainActivity.this, " 触发【紫色主题】彩蛋！", Toast.LENGTH_SHORT).show();
+                            changeStatusBarColor(vipButtonColor);
+                            changeButtonColor(vipButtonColor);
+                            changeLayoutColor(vipLayoutColor);
+                            isOriginColor = "false";
+                        } else {
+                            Log.d(TAG, "caidan: " + "返回蓝色主题");
+                            Toast.makeText(MainActivity.this, " 触发【蓝色主题】彩蛋！", Toast.LENGTH_SHORT).show();
+                            changeStatusBarColor(originButtonColor);
+                            changeButtonColor(originButtonColor);
+                            changeLayoutColor(originLayoutColor);
+                            isOriginColor = "true";
+                        }
+                    }
 
-                        pb_button.startAnim();
-                        Message m = mHandler.obtainMessage();
-                        mHandler.sendMessageDelayed(m, 1500);
-                        break;
-                    default:
-                        caidanCode = caidanCode + "7";
-                        //避免过长溢出
-                        if (caidanCode.length()>=100){
-                            caidanCode = caidanCode.substring(caidanCode.length()-7,caidanCode.length());
-                        }
-                        Log.d(TAG, "caidanCode: "+caidanCode);
-                        caidan();
-                        break;
-                }
+                    pb_button.startAnim();
+                    Message m = mHandler.obtainMessage();
+                    mHandler.sendMessageDelayed(m, 1500);
+                    break;
+                default:
+                    caidanCode = caidanCode + "7";
+                    //避免过长溢出
+                    if (caidanCode.length() >= 100) {
+                        caidanCode = caidanCode.substring(caidanCode.length() - 7, caidanCode.length());
+                    }
+                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    caidan();
+                    break;
             }
-
         }
 
+    }
+
+    /**
+     * 右下角彩蛋
+     */
     public void caidan(){
         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("");
@@ -317,6 +293,10 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * 修改状态栏颜色
+     * @param color 颜色值 "#ffffff"格式
+     */
     private void changeStatusBarColor(String color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
@@ -331,6 +311,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 修改按钮背景颜色
+     * @param color 颜色值 "#ffffff"格式
+     */
     private void changeButtonColor(String color){
 
         btStartDate .setBackgroundColor(Color.parseColor(color));
@@ -348,13 +332,17 @@ public class MainActivity extends AppCompatActivity {
         pb_button.setBgColor(Color.parseColor(color));//(Color.rgb(38, 188, 213));//
     }
 
+    /**
+     * 修改页面布局背景颜色
+     * @param color 颜色值 "#ffffff"格式
+     */
     private void changeLayoutColor(String color){
         ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.activity_main);
         layout.setBackgroundColor(Color.parseColor(color));
     }
 
     /**
-     * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容（每次create时触发）
+     * 初始化页面控件的数据，如果用户之前输入过一次，再打开APP时显示的就是上次输入的内容（每次onCreate时触发）
      */
     private void initData(){
         sp = getSharedPreferences("User", Context.MODE_PRIVATE);
@@ -575,7 +563,7 @@ public class MainActivity extends AppCompatActivity {
      * 创建新的请假页面
      *
      * @param newPath sd卡内的某个路径
-     * @throws IOException
+     * @throws IOException 异常
      */
     private void createLeaveWeb(String newPath) throws IOException {
         InputStream is = this.getResources().getAssets().open(leaveName);
@@ -681,8 +669,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 创建新的延期页面
      *
-     * @param newPath
-     * @throws IOException
+     * @param newPath sd卡内的某个路径
+     * @throws IOException 异常
      */
     private void createDelayWeb(String newPath) throws IOException {
         InputStream is = this.getResources().getAssets().open(delayName);
@@ -755,8 +743,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * 创建新的销假页面
      *
-     * @param newPath
-     * @throws IOException
+     * @param newPath sd卡内的某个路径
+     * @throws IOException 异常
      */
     private void createCancelWeb(String newPath) throws IOException {
         InputStream is = this.getResources().getAssets().open(cancelName);
@@ -898,9 +886,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    private Handler mHandler=new Handler()
-    {
+    /**
+     * pb_button触发时传递信息创建页面
+     */
+    private Handler mHandler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
