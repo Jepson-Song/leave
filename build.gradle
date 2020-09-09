@@ -22,3 +22,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+ext {
+    //'CI' environment variables is set in CI(eg. Jenkins) configuration page
+    ci = 'true'.equals(System.getenv('CI'))
+}

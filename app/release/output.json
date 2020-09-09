@@ -11,10 +11,10 @@
       "type": "SINGLE",
       "filters": [],
       "properties": [],
-      "versionCode": 1,
-      "versionName": "1",
+      "versionCode": 21,
+      "versionName": "21",
       "enabled": true,
-      "outputFile": "app-release.apk"
+      "outputFile": "leave_V1.2.1.apk"
     }
   ]
 }
