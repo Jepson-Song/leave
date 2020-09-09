@@ -26,6 +26,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -91,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
     private String caidanCode = "";
 
     private Boolean isCreate = false;
+
+    private TextView tvVersionName;
 
     // 右下角彩蛋弹出框内容
     private String[] randStrs = new String[]{
@@ -168,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
 
         //初始化控件的值
         initData();
+        
+        tvVersionName = (TextView)findViewById(R.id.tvVersionName);
+        tvVersionName.setText("V"+getVersionName(context));
 
     }
 
@@ -1007,5 +1013,28 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    public static int getVersionCode(Context context) {
+        PackageManager manager = context.getPackageManager();
+        int code = 0;
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            code = info.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return code;
+    }
+
+    public static String getVersionName(Context context) {
+        PackageManager manager = context.getPackageManager();
+        String name = null;
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            name = info.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return name;
+    }
 
 }

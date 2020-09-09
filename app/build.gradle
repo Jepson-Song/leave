@@ -1,38 +1,40 @@
 apply plugin: 'com.android.application'
+
 def gitVersionCode() {
     def cmd = 'git rev-list HEAD --count'
     cmd.execute().text.trim().toInteger()
 }
+
 def gitVersionName() {
     def versionCode = gitVersionCode()
     def name3 = versionCode.mod(10)
     def name2 = (versionCode/10).toInteger().mod(10)
     def name1 = (versionCode/100).toInteger().mod(10)
-    if (name1==0) {
+    if (name1 == 0) {
         name1 = 1
     }
     def name = name1 + "." + name2 + "." + name3
     return name
 }
 
-def gitVersionTag() {
-    def cmd = 'git describe --tags'
-    def version = cmd.execute().text.trim()
-
-    def pattern = "-(\\d+)-g"
-    def matcher = version =~ pattern
-
-    if (matcher) {
-        version = version.substring(0, matcher.start()) + "." + matcher[0][1]
-    } else {
-        version = version + ".0"
-    }
-
-    return version
-}
-def releaseTime() {
-    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
-}
+//def gitVersionTag() {
+//    def cmd = 'git describe --tags'
+//    def version = cmd.execute().text.trim()
+//
+//    def pattern = "-(\\d+)-g"
+//    def matcher = version =~ pattern
+//
+//    if (matcher) {
+//        version = version.substring(0, matcher.start()) + "." + matcher[0][1]
+//    } else {
+//        version = version + ".0"
+//    }
+//
+//    return version
+//}
+//def releaseTime() {
+//    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+//}
 
 android {
     compileSdkVersion 29
@@ -50,7 +52,6 @@ android {
 
     buildTypes {
         debug {
-        // 为了不和 release 版本冲突
         applicationIdSuffix ".debug"
         }
         release {
@@ -58,6 +59,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             if (variant.buildType.name.equals('release')) {
@@ -65,11 +67,8 @@ android {
             }else{
                 outputFileName = "leave_V${defaultConfig.versionName}_debug.apk"
             }
-            }
-
         }
-
-
+    }
 }
 
 dependencies {
