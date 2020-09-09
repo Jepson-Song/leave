@@ -38,6 +38,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.TreeMap;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -88,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
     private String caidanCode = "";
 
+    private Boolean isCreate = false;
+
     // 右下角彩蛋弹出框内容
     private String[] randStrs = new String[]{
 //            "打破假闭环！",
@@ -100,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        isCreate = true;
 
         context = getApplicationContext();
 
@@ -163,6 +168,22 @@ public class MainActivity extends AppCompatActivity {
         //初始化控件的值
         initData();
 
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+
+        if (!isCreate){
+            if (isOriginColor.equals("true")) {
+                changeLayoutColor(originLayoutColor);
+                changeButtonColor(originButtonColor);
+            }else{
+                changeLayoutColor(vipLayoutColor);
+                changeButtonColor(vipButtonColor);
+            }
+        }
+        isCreate = false;
     }
 
     /**
@@ -232,7 +253,15 @@ public class MainActivity extends AppCompatActivity {
                     }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1]) - 1, Integer.parseInt(dates[2])).show();
                     break;
                 case R.id.pb_btn:
-                    caidanCode = caidanCode + "6";
+
+                    //读取并处理控件数据
+                    getData();
+
+
+                    Message m = mHandler.obtainMessage();
+                    mHandler.sendMessageDelayed(m, 1000);
+
+                    caidanCode = caidanCode + "7";
                     Log.d(TAG, "caidanCode: " + caidanCode);
                     if (caidanCode.length() >= 7) {
                         Log.d(TAG, "7_caidan: " + caidanCode.substring(caidanCode.length() - 7, caidanCode.length()));
@@ -258,11 +287,9 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     pb_button.startAnim();
-                    Message m = mHandler.obtainMessage();
-                    mHandler.sendMessageDelayed(m, 1500);
                     break;
                 default:
-                    caidanCode = caidanCode + "7";
+                    caidanCode = caidanCode + "6";
                     //避免过长溢出
                     if (caidanCode.length() >= 100) {
                         caidanCode = caidanCode.substring(caidanCode.length() - 7, caidanCode.length());
@@ -894,9 +921,6 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            //读取并处理控件数据
-            getData();
-
             //创建leave页面
             try {
                 createLeaveWeb(newPath);
@@ -969,6 +993,13 @@ public class MainActivity extends AppCompatActivity {
                     Intent i=new Intent();
                     i.setClass(MainActivity.this,WebActivity.class);
                     startActivity(i);
+
+                    changeButtonColor("#00000000"); //透明
+                    if (isOriginColor.equals("true")) {
+                        changeLayoutColor(originButtonColor);
+                    }else{
+                        changeLayoutColor(vipButtonColor);
+                    }
                 }
             });
 
