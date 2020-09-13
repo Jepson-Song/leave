@@ -342,14 +342,15 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("");
         builder.setMessage(
-                "代码开源：\n" +
-                "https://github.com/Jepson-Song/leave\n\n" +
                 "免责声明：\n" +
-                "该软件为作者从网络上随意复制粘贴和胡乱敲击形成，作者并不知道其用途，也不知道是否有人使用 :)\n对于任何人通过任何方式获得该软件作者一概不知，对于任何用途产生的任何后果亦与作者无关。"
+                "该软件为作者从网络上随意复制粘贴和胡乱敲击形成，作者并不知道其用途，也不知道是否有人使用 :)\n对于任何人通过任何方式获得该软件作者一概不知，对于任何用途产生的任何后果亦与作者无关。\n\n" +
+                        "代码开源：\n" +
+                        "https://github.com/Jepson-Song/leave\n" +
+                        "(求Star~求Star~求Star~)"
                 //"该APP仅用于作者学习安卓开发，不涉及任何商业行为，不针对任何个人或个体。作者不清楚该APP是否有其他用途，对于其他用途产生的任何后果亦与作者无关。"
         );
         builder.setNegativeButton("取消",null);
-        builder.setPositiveButton("前往GitHub主页", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("前往GitHub主页点亮Star", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 //                Toast.makeText(MainActivity.this,"GG",0).show();
