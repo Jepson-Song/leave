@@ -2,9 +2,11 @@ package com.example.test;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.DownloadListener;
+import android.webkit.URLUtil;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -32,6 +36,8 @@ public class GithubActivity extends AppCompatActivity {
     private String originButtonColor = "#26bcd5";
     private String vipButtonColor = "#cc6699";
     private String isOriginColor;
+
+    private String nowUrl = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +83,25 @@ public class GithubActivity extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
+    void onDownloadStart(String url) {
+//创建request对象
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse(url));
+        //设置什么网络情况下可以下载
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        //设置通知栏的标题
+        request.setTitle("下载");
+        //设置通知栏的message
+        request.setDescription("今日头条正在下载.....");
+        //设置漫游状态下是否可以下载
+        request.setAllowedOverRoaming(false);
+        //设置文件存放目录
+        request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS,"update.apk");
+        //获取系统服务
+        DownloadManager downloadManager= (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        //进行下载
+        long id = downloadManager.enqueue(request);
+    }
+
     private void openWeb(){
         wvWeb = (WebView) findViewById(R.id.wvWeb);
         //需要加载的网页的url
@@ -97,5 +122,38 @@ public class GithubActivity extends AppCompatActivity {
                 return true;
             }
         });
+//        wvWeb.setDownloadListener(new DownloadListener() {
+//            @Override
+//            public void onDownloadStart(final String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+//                // TODO 实现下载逻辑
+//                Log.e("onDownloadStart", "url===" + url + "---userAgent=" + userAgent + "---contentDisposition=" + contentDisposition + "---mimetype=" + mimetype + "---contentLength=" + contentLength);
+//                nowUrl = wvWeb.getUrl();
+//                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(nowUrl));
+//                // 允许媒体扫描，根据下载的文件类型被加入相册、音乐等媒体库
+//                request.allowScanningByMediaScanner();
+//                // 设置通知的显示类型，下载进行时和完成后显示通知
+//                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+//                // 设置通知栏的标题，如果不设置，默认使用文件名
+//                request.setTitle("下载完成");
+//                // 设置通知栏的描述
+////                    request.setDescription("This is description");
+//                // 允许在计费流量下下载
+//                request.setAllowedOverMetered(true);
+//                // 允许该记录在下载管理界面可见
+//                request.setVisibleInDownloadsUi(true);
+//                // 允许漫游时下载
+//                request.setAllowedOverRoaming(true);
+//
+//                String fileName = URLUtil.guessFileName(url, contentDisposition, mimetype);
+//                Log.e("fileName:{}", fileName);
+//                request.setDestinationInExternalPublicDir(Environment.getExternalStorageDirectory() + "/Download/", fileName);
+//
+//
+//                final DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+//                // 添加一个下载任务
+//                long downloadId = downloadManager.enqueue(request);
+//            }
+//        });
     }
+
 }

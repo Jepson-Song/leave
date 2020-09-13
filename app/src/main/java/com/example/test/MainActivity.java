@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -354,9 +355,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 //                Toast.makeText(MainActivity.this,"GG",0).show();
-//            转入新activity，在新页面中打开网页
-            Intent intent = new Intent(MainActivity.this, GithubActivity.class);
-            startActivity(intent);
+                //用APP打开
+//            Intent intent = new Intent(MainActivity.this, GithubActivity.class);
+//            startActivity(intent);
+                //用默认浏览器打开
+                Uri uri = Uri.parse("https://github.com/Jepson-Song/leave");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
             }
         });
         builder.show();
