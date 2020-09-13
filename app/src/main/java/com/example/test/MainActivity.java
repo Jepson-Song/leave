@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -83,17 +84,18 @@ public class MainActivity extends AppCompatActivity {
     private ProgressButton pb_button; //动画按钮
 
     private Button btStartDate, btStartTime, btEndDate, btEndTime, btApplicationDate;
-    private Button btAuthor;
+    private Button btAuthor, btVersionName;
 
     private String originButtonColor = "#26bcd5", originLayoutColor = "#e0ffff";//"#e6fafa";//"#f0ffff";
     private String vipButtonColor = "#cc6699", vipLayoutColor = "#fcedf7";//"#fcf9fb";//"#fcedf7";//"#ffe0f5";//"#ffcccc";
     private String isOriginColor = "true";
 
-    private String caidanCode = "";
+    private String buttonCode = "";
 
     private Boolean isCreate = false;
 
-    private TextView tvVersionName;
+    private String caidanCode = "12345678";
+    private int caidanCodeLen = caidanCode.length();
 
     // 右下角彩蛋弹出框内容
     private String[] randStrs = new String[]{
@@ -159,8 +161,6 @@ public class MainActivity extends AppCompatActivity {
         btApplicationDate = (Button)findViewById(R.id.btApplicationDate);
         btApplicationDate.setOnClickListener(new ButtonListener());
 
-        btAuthor = (Button)findViewById(R.id.btAuthor);
-        btAuthor.setOnClickListener(new ButtonListener());
 
         pb_button = (ProgressButton) findViewById(R.id.pb_btn);
         pb_button.setBgColor(Color.parseColor("#26bcd5"));//(Color.rgb(38, 188, 213));//
@@ -169,11 +169,15 @@ public class MainActivity extends AppCompatActivity {
         pb_button.setButtonText("生成");
         pb_button.setOnClickListener(new ButtonListener());
 
+        btAuthor = (Button)findViewById(R.id.btAuthor);
+        btAuthor.setOnClickListener(new ButtonListener());
+
+        btVersionName = (Button) findViewById(R.id.btVersionName);
+        btVersionName.setOnClickListener(new ButtonListener());
+        btVersionName.setText("V"+getVersionName(context));
+
         //初始化控件的值
         initData();
-        
-        tvVersionName = (TextView)findViewById(R.id.tvVersionName);
-        tvVersionName.setText("V"+getVersionName(context));
 
     }
 
@@ -201,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
             String[] dates, times;
             switch (v.getId()) {
                 case R.id.btStartDate:
-                    caidanCode = caidanCode + "1";
-                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    buttonCode = buttonCode + "1";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
                     dates = btStartDate.getText().toString().trim().split("-");
                     new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -214,8 +218,8 @@ public class MainActivity extends AppCompatActivity {
                     }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1]) - 1, Integer.parseInt(dates[2])).show();
                     break;
                 case R.id.btStartTime:
-                    caidanCode = caidanCode + "2";
-                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    buttonCode = buttonCode + "2";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
                     times = btStartTime.getText().toString().trim().split(":");
                     new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -225,8 +229,8 @@ public class MainActivity extends AppCompatActivity {
                     }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
                     break;
                 case R.id.btEndDate:
-                    caidanCode = caidanCode + "3";
-                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    buttonCode = buttonCode + "3";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
                     dates = btEndDate.getText().toString().trim().split("-");//|\s+
                     new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -237,8 +241,8 @@ public class MainActivity extends AppCompatActivity {
                     }, Integer.parseInt(dates[0]), Integer.parseInt(dates[1]) - 1, Integer.parseInt(dates[2])).show();
                     break;
                 case R.id.btEndTime:
-                    caidanCode = caidanCode + "4";
-                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    buttonCode = buttonCode + "4";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
                     times = btEndTime.getText().toString().trim().split(":");
                     new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
                         @Override
@@ -248,8 +252,8 @@ public class MainActivity extends AppCompatActivity {
                     }, Integer.parseInt(times[0]), Integer.parseInt(times[1]), true).show();
                     break;
                 case R.id.btApplicationDate:
-                    caidanCode = caidanCode + "5";
-                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    buttonCode = buttonCode + "5";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
                     dates = btApplicationDate.getText().toString().trim().split("-");
                     new DatePickerDialog(MainActivity.this, new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -264,17 +268,16 @@ public class MainActivity extends AppCompatActivity {
                     //读取并处理控件数据
                     getData();
 
-
                     Message m = mHandler.obtainMessage();
                     mHandler.sendMessageDelayed(m, 1000);
 
-                    caidanCode = caidanCode + "7";
-                    Log.d(TAG, "caidanCode: " + caidanCode);
-                    if (caidanCode.length() >= 7) {
-                        Log.d(TAG, "7_caidan: " + caidanCode.substring(caidanCode.length() - 7, caidanCode.length()));
+                    buttonCode = buttonCode + "8";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
+                    if (buttonCode.length() >= caidanCodeLen) {
+                        Log.d(TAG, "7_caidan: " + buttonCode.substring(buttonCode.length() - caidanCodeLen, buttonCode.length()));
                         Log.d(TAG, "caidan: isOriginColor: " + isOriginColor);
                     }
-                    if ((caidanCode.length() >= 7 && caidanCode.substring(caidanCode.length() - 7, caidanCode.length()).equals("1234567")) || strName.equals("宋金鹏")) {
+                    if ((buttonCode.length() >= caidanCodeLen && buttonCode.substring(buttonCode.length() - caidanCodeLen, buttonCode.length()).equals(caidanCode)) || strName.equals("宋金鹏")) {
                         Log.d(TAG, "caidan: " + "触发彩蛋");
                         if (isOriginColor.equals("true")) {
                             Log.d(TAG, "caidan: " + "激活紫色主题");
@@ -295,13 +298,18 @@ public class MainActivity extends AppCompatActivity {
 
                     pb_button.startAnim();
                     break;
-                default:
-                    caidanCode = caidanCode + "6";
+                case R.id.btVersionName:
+                    buttonCode = buttonCode + "6";
+                    Log.d(TAG, "buttonCode: " + buttonCode);
+                    githubLink();
+                    break;
+                case R.id.btAuthor:
+                    buttonCode = buttonCode + "7";
                     //避免过长溢出
-                    if (caidanCode.length() >= 100) {
-                        caidanCode = caidanCode.substring(caidanCode.length() - 7, caidanCode.length());
+                    if (buttonCode.length() >= 100) {
+                        buttonCode = buttonCode.substring(buttonCode.length() - caidanCodeLen, buttonCode.length());
                     }
-                    Log.d(TAG, "caidanCode: " + caidanCode);
+                    Log.d(TAG, "buttonCode: " + buttonCode);
                     caidan();
                     break;
             }
@@ -322,6 +330,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 //                Toast.makeText(MainActivity.this,"GG",0).show();
+            }
+        });
+        builder.show();
+    }
+
+    /**
+     * 右下角彩蛋
+     */
+    public void githubLink(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("");
+        builder.setMessage(
+                "代码开源：\n" +
+                "https://github.com/Jepson-Song/leave\n\n" +
+                "免责声明：\n" +
+                "该软件为作者从网络上随意复制粘贴和胡乱敲击形成，作者并不知道其用途，也不知道是否有人使用 :)\n对于任何人通过任何方式获得该软件作者一概不知，对于任何用途产生的任何后果亦与作者无关。"
+                //"该APP仅用于作者学习安卓开发，不涉及任何商业行为，不针对任何个人或个体。作者不清楚该APP是否有其他用途，对于其他用途产生的任何后果亦与作者无关。"
+        );
+        builder.setNegativeButton("取消",null);
+        builder.setPositiveButton("前往GitHub主页", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+//                Toast.makeText(MainActivity.this,"GG",0).show();
+//            转入新activity，在新页面中打开网页
+            Intent intent = new Intent(MainActivity.this, GithubActivity.class);
+            startActivity(intent);
             }
         });
         builder.show();
